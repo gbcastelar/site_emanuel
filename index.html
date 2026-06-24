@@ -1,289 +1,1011 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Reino da Aventura - Emanuel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🍄 Convite do Emanuel - Reino dos Cogumelos</title>
 <style>
-body { margin:0; overflow:hidden; background:#8fd3ff; font-family:Arial; }
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;700;900&display=swap');
 
-canvas { display:block; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-#startScreen, #winScreen {
-position:absolute;
-width:100%; height:100%;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-background:linear-gradient(#8fd3ff,#ffffff);
-z-index:10;
-}
+  :root {
+    --sky: #5C94FC;
+    --sky-dark: #2C6FC9;
+    --ground: #C84B0C;
+    --ground-top: #E8A830;
+    --coin: #F8D030;
+    --mario-red: #E81818;
+    --white: #FAFAFA;
+    --black: #181818;
+    --green: #00B800;
+    --dark-green: #007800;
+    --pipe-green: #00A800;
+    --cloud: #F8F8F8;
+  }
 
-button {
-padding:20px 40px;
-font-size:22px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:orange;
-}
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--sky);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    user-select: none;
+    -webkit-user-select: none;
+  }
 
-#footer {
-position:absolute;
-bottom:0;
-width:100%;
-background:rgba(0,0,0,0.65);
-color:white;
-font-size:13px;
-padding:10px;
-line-height:1.4;
-}
+  /* ===== TELA INICIAL ===== */
+  #startScreen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #5C94FC 0%, #3a78e4 60%, #1a5cc8 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    gap: 0;
+  }
 
-#whats {
-position:absolute;
-top:15px;
-right:15px;
-background:#25D366;
-color:white;
-padding:10px;
-border-radius:8px;
-text-decoration:none;
-}
+  #startScreen .clouds-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .cloud-deco {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    opacity: 0.85;
+    animation: floatCloud 12s linear infinite;
+  }
+
+  @keyframes floatCloud {
+    from { transform: translateX(-200px); }
+    to { transform: translateX(110vw); }
+  }
+
+  #startScreen .title-block {
+    background: rgba(0,0,0,0.55);
+    border: 4px solid var(--coin);
+    border-radius: 8px;
+    padding: 18px 28px;
+    text-align: center;
+    margin-bottom: 18px;
+    animation: pulse 1.8s ease-in-out infinite;
+    max-width: 90vw;
+  }
+
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+
+  #startScreen .crown { font-size: clamp(2rem,7vw,3.5rem); margin-bottom: 6px; }
+
+  #startScreen h1 {
+    font-family: 'Press Start 2P', monospace;
+    color: var(--coin);
+    font-size: clamp(0.7rem, 3.5vw, 1.4rem);
+    line-height: 1.6;
+    text-shadow: 3px 3px 0 #8B4A00;
+    letter-spacing: 1px;
+  }
+
+  #startScreen .sub {
+    font-family: 'Press Start 2P', monospace;
+    color: white;
+    font-size: clamp(0.5rem, 2.5vw, 0.85rem);
+    margin-top: 10px;
+    text-shadow: 2px 2px 0 #000;
+  }
+
+  .mario-hero {
+    font-size: clamp(5rem, 22vw, 140px);
+    animation: marioIdle 0.6s steps(2) infinite;
+    filter: drop-shadow(4px 6px 0 rgba(0,0,0,0.5));
+    margin: 10px 0;
+    line-height: 1;
+  }
+
+  @keyframes marioIdle {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
+  }
+
+  .invite-preview {
+    background: rgba(0,0,0,0.6);
+    border: 3px solid #00B800;
+    border-radius: 8px;
+    padding: 14px 20px;
+    max-width: 90vw;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .invite-preview p {
+    font-family: 'Press Start 2P', monospace;
+    color: white;
+    font-size: clamp(0.45rem, 2vw, 0.75rem);
+    line-height: 2;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  .invite-preview .highlight {
+    color: var(--coin);
+  }
+
+  #startBtn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.8rem, 3.5vw, 1.3rem);
+    background: var(--mario-red);
+    color: white;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 6px;
+    cursor: pointer;
+    border-bottom: 6px solid #8B0000;
+    text-shadow: 2px 2px 0 #000;
+    box-shadow: 0 8px 0 #8B0000, 0 12px 20px rgba(0,0,0,0.4);
+    animation: btnBounce 1s ease-in-out infinite;
+    transition: transform 0.1s, box-shadow 0.1s;
+    letter-spacing: 2px;
+  }
+
+  @keyframes btnBounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  #startBtn:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #8B0000;
+  }
+
+  /* ===== JOGO ===== */
+  #gameWrapper {
+    display: none;
+    position: fixed;
+    inset: 0;
+    flex-direction: column;
+  }
+
+  #gameWrapper.active { display: flex; }
+
+  /* HUD */
+  #hud {
+    background: #000;
+    color: var(--coin);
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.5rem, 2vw, 0.85rem);
+    padding: 6px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    z-index: 10;
+    border-bottom: 3px solid var(--coin);
+  }
+
+  #hud span { white-space: nowrap; }
+
+  /* Canvas */
+  #gameCanvas {
+    display: block;
+    width: 100%;
+    flex: 1;
+    image-rendering: pixelated;
+    touch-action: none;
+  }
+
+  /* Modal vitória */
+  #winModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 2000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  #winModal.show { display: flex; }
+
+  #winModal .win-box {
+    background: #000080;
+    border: 5px solid var(--coin);
+    border-radius: 10px;
+    padding: 24px 30px;
+    text-align: center;
+    max-width: 480px;
+    width: 100%;
+  }
+
+  #winModal h2 {
+    font-family: 'Press Start 2P', monospace;
+    color: var(--coin);
+    font-size: clamp(0.9rem, 4vw, 1.4rem);
+    margin-bottom: 14px;
+    text-shadow: 3px 3px 0 #8B4A00;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  #winModal p {
+    font-family: 'Press Start 2P', monospace;
+    color: white;
+    font-size: clamp(0.5rem, 2vw, 0.75rem);
+    line-height: 2.2;
+    margin-bottom: 16px;
+  }
+
+  .win-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .win-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.6rem, 2.5vw, 0.9rem);
+    padding: 14px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 340px;
+    text-shadow: 1px 1px 0 #000;
+    transition: transform 0.1s;
+  }
+
+  .win-btn:active { transform: scale(0.96); }
+
+  .btn-map {
+    background: var(--green);
+    color: white;
+    border-bottom: 5px solid var(--dark-green);
+    box-shadow: 0 4px 0 var(--dark-green);
+  }
+
+  .btn-whatsapp {
+    background: #25D366;
+    color: white;
+    border-bottom: 5px solid #1da851;
+    box-shadow: 0 4px 0 #1da851;
+  }
+
+  /* Rodapé */
+  #footer {
+    display: none;
+  }
+
+  /* Touch hint */
+  #touchHint {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.4rem, 1.8vw, 0.65rem);
+    padding: 8px 14px;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 5;
+    animation: fadeHint 3s ease forwards;
+    text-align: center;
+  }
+
+  @keyframes fadeHint {
+    0%,60% { opacity: 1; }
+    100% { opacity: 0; }
+  }
 </style>
 </head>
 <body>
 
+<!-- ===== TELA INICIAL ===== -->
 <div id="startScreen">
-<h1>👑 Reino da Aventura do Emanuel</h1>
-<button onclick="startGame()">START</button>
+  <div class="clouds-bg" id="cloudsBg"></div>
+
+  <div class="title-block">
+    <div class="crown">👑🍄</div>
+    <h1>CONVITE OFICIAL<br>DO REINO DOS<br>COGUMELOS</h1>
+    <p class="sub">🎂 MISSÃO: ANIVERSÁRIO</p>
+  </div>
+
+  <div class="mario-hero">🍄</div>
+
+  <div class="invite-preview">
+    <p>
+      <span class="highlight">👦 EMANUEL</span><br>
+      📅 <span class="highlight">18 DE JULHO</span><br>
+      🕔 <span class="highlight">17H ÀS 21H</span><br>
+      📍 Av. Santo Afonso, 90<br>
+      Campos Elíseos · Varginha-MG
+    </p>
+  </div>
+
+  <button id="startBtn" onclick="startGame()">▶ PRESS START</button>
 </div>
 
-<div id="winScreen" style="display:none">
-<h1>🏁 FASE CONCLUÍDA!</h1>
-<p>Você venceu a missão do Reino dos Cogumelos!</p>
+<!-- ===== JOGO ===== -->
+<div id="gameWrapper">
+  <div id="hud">
+    <span>🍄 MARIO</span>
+    <span id="hudScore">COGUMELOS: 0/50</span>
+    <span>🌟 EMANUEL</span>
+  </div>
+  <canvas id="gameCanvas"></canvas>
 </div>
 
-<a id="whats" target="_blank">WhatsApp</a>
-
-<canvas id="game"></canvas>
-
-<div id="footer">
-🎂 Aniversário do Emanuel | 18 de julho | 17h às 21h | Varginha/MG<br>
-🎮 Pule obstáculos, derrote o chefão e descubra o mapa final da missão!
+<!-- ===== MODAL VITÓRIA ===== -->
+<div id="winModal">
+  <div class="win-box">
+    <div style="font-size:3rem;margin-bottom:8px;">🎉🍄🎂</div>
+    <h2>FASE CONCLUÍDA!</h2>
+    <p>
+      PARABÉNS!<br>
+      VOCÊ CHEGOU AO<br>
+      REINO DO EMANUEL!<br>
+      <span style="color:var(--coin);">18 DE JULHO · 17H ÀS 21H</span><br>
+      Av. Santo Afonso, 90<br>
+      Campos Elíseos · Varginha-MG
+    </p>
+    <div class="win-btns">
+      <button class="win-btn btn-map" onclick="openMap()">📍 VER NO MAPA</button>
+      <button class="win-btn btn-whatsapp" onclick="openWhatsApp()">📱 CONFIRMAR PRESENÇA</button>
+    </div>
+  </div>
 </div>
 
 <script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// ==========================================
+//  NUVENS DECORATIVAS NA TELA INICIAL
+// ==========================================
+(function buildClouds() {
+  const bg = document.getElementById('cloudsBg');
+  const configs = [
+    { top:'10%', size:80, delay:0, dur:14 },
+    { top:'22%', size:50, delay:5, dur:18 },
+    { top:'5%',  size:60, delay:9, dur:16 },
+    { top:'35%', size:40, delay:2, dur:20 },
+  ];
+  configs.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'cloud-deco';
+    d.style.cssText = `top:${c.top};width:${c.size*2}px;height:${c.size*0.6}px;animation-delay:-${c.delay}s;animation-duration:${c.dur}s;left:-200px;`;
+    bg.appendChild(d);
+    // puffs
+    for (let i=0;i<3;i++){
+      const p=document.createElement('div');
+      p.style.cssText=`position:absolute;width:${c.size*(0.6+i*0.15)}px;height:${c.size*(0.6+i*0.15)}px;background:white;border-radius:50%;bottom:0;left:${i*c.size*0.35}px;opacity:0.9;`;
+      d.appendChild(p);
+    }
+  });
+})();
 
-// ---------- AUDIO ----------
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// ==========================================
+//  JOGO
+// ==========================================
+const TOTAL_MUSHROOMS = 50;
+let gameStarted = false;
+let animId;
 
-function sound(freq, time=0.1){
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  o.connect(g); g.connect(audioCtx.destination);
-  o.frequency.value = freq;
-  o.type = "square";
-  o.start();
-  g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
-  o.stop(audioCtx.currentTime + time);
-}
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-let game = false;
-
-// ---------- PLAYER SPRITE ----------
-let frame = 0;
-
-let player = {
-x:80,
-y:0,
-vy:0,
-w:40,
-h:40,
-ground:canvas.height-120,
-jumping:false
+// Estado do jogo
+let state = {
+  score: 0,
+  mario: null,
+  platforms: [],
+  mushrooms: [],
+  coins: [],
+  clouds: [],
+  pipes: [],
+  cameraX: 0,
+  worldWidth: 0,
+  won: false,
+  particles: []
 };
 
-player.y = player.ground;
+// Constantes de física
+const GRAVITY = 0.55;
+const JUMP_FORCE = -13;
+const MARIO_SPEED = 4;
+let jumpPressed = false;
+let keys = {};
 
-// ---------- PARALLAX ----------
-let bg1 = 0, bg2 = 0, bg3 = 0;
+function startGame() {
+  document.getElementById('startScreen').style.display = 'none';
+  const gw = document.getElementById('gameWrapper');
+  gw.classList.add('active');
 
-// ---------- OBSTACLES ----------
-let obstacles = [];
-for(let i=0;i<50;i++){
-obstacles.push({x:300+i*220,y:player.ground});
+  resizeCanvas();
+  initWorld();
+  bindInput();
+  gameStarted = true;
+
+  // hint toque
+  const hint = document.createElement('div');
+  hint.id = 'touchHint';
+  hint.textContent = '👆 TOQUE NA TELA OU ESPAÇO PARA PULAR';
+  document.body.appendChild(hint);
+  setTimeout(()=>hint.remove(), 3500);
+
+  loop();
 }
 
-// ---------- BOSS ----------
-let boss = {x:12000,y:player.ground-60,hp:5,active:false};
-
-// ---------- DRAW PLAYER PIXEL ----------
-function drawPlayer(){
-frame++;
-
-ctx.fillStyle="#000";
-ctx.fillRect(player.x,player.y,40,40);
-
-// olhos animados
-ctx.fillStyle="white";
-ctx.fillRect(player.x+8,player.y+10,6,6);
-ctx.fillRect(player.x+22,player.y+10,6,6);
-
-// animação perna
-ctx.fillStyle="brown";
-if(frame%20<10){
-ctx.fillRect(player.x+10,player.y+30,8,10);
-ctx.fillRect(player.x+22,player.y+30,8,6);
-}else{
-ctx.fillRect(player.x+10,player.y+30,8,6);
-ctx.fillRect(player.x+22,player.y+30,8,10);
-}
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight - document.getElementById('hud').offsetHeight;
 }
 
-// ---------- BACKGROUND ----------
-function drawParallax(){
-bg1 -= 0.5;
-bg2 -= 1;
-bg3 -= 2;
-
-ctx.fillStyle="#bfe9ff";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-// layer 1 clouds
-ctx.fillStyle="white";
-for(let i=0;i<10;i++){
-ctx.beginPath();
-ctx.arc((i*200+bg1)%canvas.width,100,30,0,Math.PI*2);
-ctx.fill();
-}
-
-// layer 2 hills
-ctx.fillStyle="#7ec850";
-for(let i=0;i<8;i++){
-ctx.fillRect((i*300+bg2)%canvas.width,canvas.height-200,200,100);
-}
-
-// layer 3 mountains
-ctx.fillStyle="#4c8b5e";
-for(let i=0;i<6;i++){
-ctx.fillRect((i*400+bg3)%canvas.width,canvas.height-250,250,150);
-}
-}
-
-// ---------- OBSTACLES ----------
-function drawObstacles(){
-ctx.fillStyle="green";
-obstacles.forEach(o=>{
-o.x -= 5;
-ctx.fillRect(o.x,o.y,30,30);
-
-if(
-player.x < o.x+30 &&
-player.x+40 > o.x &&
-player.y < o.y+30 &&
-player.y+40 > o.y
-){
-sound(120,0.2);
-location.reload();
-}
+window.addEventListener('resize', () => {
+  if (!gameStarted) return;
+  resizeCanvas();
 });
+
+// ==========================================
+// CONSTRUÇÃO DO MUNDO
+// ==========================================
+function initWorld() {
+  const W = canvas.width;
+  const H = canvas.height;
+  const groundY = H - 80;
+
+  // Mundo = 50 cogumelos espalhados, ~600px entre cada
+  const mushroomSpacing = 580;
+  state.worldWidth = TOTAL_MUSHROOMS * mushroomSpacing + W * 2;
+
+  // Chão contínuo (blocos)
+  state.platforms = [];
+  for (let x = 0; x < state.worldWidth; x += 64) {
+    state.platforms.push({ x, y: groundY, w: 64, h: 80, type: 'ground' });
+  }
+
+  // Mario
+  state.mario = {
+    x: 100, y: groundY - 80,
+    w: 52, h: 72,
+    vx: MARIO_SPEED, vy: 0,
+    onGround: false,
+    jumping: false,
+    frame: 0, frameTick: 0,
+    direction: 1,
+    dead: false
+  };
+
+  // Gera plataformas flutuantes e cogumelos
+  state.mushrooms = [];
+  state.pipes = [];
+  const usedX = new Set();
+
+  for (let i = 0; i < TOTAL_MUSHROOMS; i++) {
+    const baseX = W + i * mushroomSpacing + 200;
+
+    // Tipo aleatório de obstáculo
+    const type = Math.floor(Math.random() * 3);
+    let mX, mY;
+
+    if (type === 0) {
+      // Plataforma no ar
+      const platW = 120 + Math.random() * 80;
+      const platY = groundY - 120 - Math.random() * 100;
+      state.platforms.push({ x: baseX, y: platY, w: platW, h: 20, type: 'brick' });
+      mX = baseX + platW / 2 - 24;
+      mY = platY - 56;
+    } else if (type === 1) {
+      // Cano (obstáculo)
+      const pipeH = 80 + Math.random() * 60;
+      state.pipes.push({ x: baseX, y: groundY - pipeH, w: 64, h: pipeH });
+      // Cogumelo ao lado
+      const platW = 100;
+      const platY2 = groundY - pipeH - 60;
+      state.platforms.push({ x: baseX + 80, y: platY2, w: platW, h: 20, type: 'brick' });
+      mX = baseX + 80 + 26;
+      mY = platY2 - 56;
+    } else {
+      // Plataforma dupla
+      const platY3 = groundY - 140 - Math.random() * 80;
+      state.platforms.push({ x: baseX, y: platY3, w: 100, h: 20, type: 'brick' });
+      mX = baseX + 26;
+      mY = platY3 - 56;
+    }
+
+    state.mushrooms.push({
+      x: mX, y: mY,
+      w: 48, h: 48,
+      collected: false,
+      bobOffset: Math.random() * Math.PI * 2,
+      index: i
+    });
+  }
+
+  // Plataforma final com bandeira
+  const endX = state.worldWidth - 300;
+  state.platforms.push({ x: endX, y: groundY - 160, w: 200, h: 20, type: 'brick' });
+  state.goalX = endX;
+
+  // Nuvens decorativas
+  state.clouds = [];
+  for (let i = 0; i < 60; i++) {
+    state.clouds.push({
+      x: Math.random() * state.worldWidth,
+      y: 30 + Math.random() * (H * 0.35),
+      w: 80 + Math.random() * 120,
+      speed: 0.3 + Math.random() * 0.5
+    });
+  }
+
+  state.particles = [];
+  state.won = false;
+  state.score = 0;
+  state.cameraX = 0;
+  updateHud();
 }
 
-// ---------- BOSS ----------
-function drawBoss(){
-if(boss.x < canvas.width) boss.active=true;
+// ==========================================
+// INPUT
+// ==========================================
+function bindInput() {
+  document.addEventListener('keydown', e => {
+    keys[e.code] = true;
+    if ((e.code === 'Space' || e.code === 'ArrowUp') && !jumpPressed) {
+      doJump();
+      e.preventDefault();
+    }
+  });
+  document.addEventListener('keyup', e => { keys[e.code] = false; });
 
-if(boss.active){
-ctx.fillStyle="red";
-ctx.fillRect(boss.x, boss.y, 80, 80);
+  canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    doJump();
+  }, { passive: false });
 
-boss.x -= 2;
-
-if(
-player.x < boss.x+80 &&
-player.x+40 > boss.x &&
-player.y < boss.y+80 &&
-player.y+40 > boss.y
-){
-boss.hp--;
-sound(80,0.3);
-player.vy = -12;
-
-if(boss.hp<=0){
-boss.x = -9999;
-
-// abre mapa
-setTimeout(()=>{
-window.location.href =
-"https://www.google.com/maps/search/?api=1&query=Av+Santo+Afonso+90+Varginha+MG";
-},1000);
-}
-}
-}
+  canvas.addEventListener('click', () => doJump());
 }
 
-// ---------- UPDATE ----------
-function update(){
-if(!game) return;
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-drawParallax();
-
-// chão
-ctx.fillStyle="#8B5A2B";
-ctx.fillRect(0,canvas.height-80,canvas.width,100);
-
-// physics
-player.vy += 0.8;
-player.y += player.vy;
-
-if(player.y > player.ground){
-player.y = player.ground;
-player.vy = 0;
-player.jumping=false;
+function doJump() {
+  if (state.won || !state.mario) return;
+  const m = state.mario;
+  if (m.onGround) {
+    m.vy = JUMP_FORCE;
+    m.onGround = false;
+    jumpPressed = true;
+    setTimeout(() => { jumpPressed = false; }, 300);
+  }
 }
 
-drawObstacles();
-drawBoss();
-drawPlayer();
-
-requestAnimationFrame(update);
+// ==========================================
+// LOOP PRINCIPAL
+// ==========================================
+function loop() {
+  update();
+  draw();
+  animId = requestAnimationFrame(loop);
 }
 
-// ---------- JUMP ----------
-function jump(){
-if(player.y >= player.ground){
-player.vy = -15;
-sound(300,0.1);
+function update() {
+  if (state.won) return;
+  const m = state.mario;
+  const H = canvas.height;
+  const groundY = H - 80;
+
+  // Movimento automático + física
+  m.x += m.vx;
+  m.vy += GRAVITY;
+  m.y += m.vy;
+
+  m.onGround = false;
+
+  // Colisão com plataformas
+  for (const p of state.platforms) {
+    if (rectOverlap(m, p)) {
+      // Colisão de cima
+      if (m.vy >= 0 && m.y + m.h - m.vy <= p.y + 4) {
+        m.y = p.y - m.h;
+        m.vy = 0;
+        m.onGround = true;
+      }
+    }
+  }
+
+  // Limite inferior (chão fallback)
+  if (m.y >= groundY - m.h) {
+    m.y = groundY - m.h;
+    m.vy = 0;
+    m.onGround = true;
+  }
+
+  // Câmera suave
+  const targetCam = m.x - canvas.width * 0.3;
+  state.cameraX += (targetCam - state.cameraX) * 0.12;
+  if (state.cameraX < 0) state.cameraX = 0;
+
+  // Coleta de cogumelos
+  for (const sh of state.mushrooms) {
+    if (sh.collected) continue;
+    if (rectOverlap(m, sh)) {
+      sh.collected = true;
+      state.score++;
+      updateHud();
+      spawnParticles(sh.x + sh.w/2, sh.y + sh.h/2, '#E53030');
+      spawnParticles(sh.x + sh.w/2, sh.y + sh.h/2, '#F8D030');
+    }
+  }
+
+  // Chegou ao fim
+  if (m.x > state.goalX + 80 && !state.won) {
+    state.won = true;
+    setTimeout(showWin, 800);
+  }
+
+  // Animação mario
+  m.frameTick++;
+  if (m.frameTick > 6) { m.frame = (m.frame + 1) % 4; m.frameTick = 0; }
+
+  // Partículas
+  for (let i = state.particles.length - 1; i >= 0; i--) {
+    const p = state.particles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.3;
+    p.life--;
+    if (p.life <= 0) state.particles.splice(i, 1);
+  }
+
+  // Nuvens
+  for (const c of state.clouds) {
+    c.x -= c.speed;
+    if (c.x + c.w < 0) c.x = state.worldWidth;
+  }
 }
+
+function rectOverlap(a, b) {
+  return a.x < b.x + b.w && a.x + a.w > b.x &&
+         a.y < b.y + b.h && a.y + a.h > b.y;
 }
 
-// ---------- CONTROLS ----------
-document.addEventListener("keydown",e=>{
-if(e.code==="Space") jump();
-});
-document.addEventListener("touchstart",jump);
+// ==========================================
+// DESENHO
+// ==========================================
+function draw() {
+  const W = canvas.width;
+  const H = canvas.height;
+  const cx = state.cameraX;
+  const groundY = H - 80;
 
-// ---------- START ----------
-function startGame(){
-document.getElementById("startScreen").style.display="none";
-game=true;
-update();
+  ctx.clearRect(0, 0, W, H);
+
+  // Céu gradiente
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+  skyGrad.addColorStop(0, '#5C94FC');
+  skyGrad.addColorStop(0.7, '#7AACFF');
+  skyGrad.addColorStop(1, '#aac8ff');
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Nuvens
+  for (const c of state.clouds) {
+    const sx = c.x - cx;
+    if (sx > W + 200 || sx + c.w < -200) continue;
+    drawCloud(sx, c.y, c.w);
+  }
+
+  // Chão (só o visível)
+  for (const p of state.platforms) {
+    const sx = p.x - cx;
+    if (sx > W + 70 || sx + p.w < -70) continue;
+    if (p.type === 'ground') {
+      drawGroundBlock(sx, p.y, p.w, p.h);
+    } else {
+      drawBrick(sx, p.y, p.w, p.h);
+    }
+  }
+
+  // Canos
+  for (const pipe of state.pipes) {
+    const sx = pipe.x - cx;
+    if (sx > W + 70 || sx + pipe.w < -70) continue;
+    drawPipe(sx, pipe.y, pipe.w, pipe.h);
+  }
+
+  // Bandeira do final
+  const gsx = state.goalX - cx;
+  if (gsx > -100 && gsx < W + 100) {
+    drawGoalFlag(gsx, groundY - 200);
+  }
+
+  // Cogumelos
+  const t = Date.now() / 1000;
+  for (const sh of state.mushrooms) {
+    if (sh.collected) continue;
+    const sx = sh.x - cx;
+    if (sx > W + 60 || sx + sh.w < -60) continue;
+    const bob = Math.sin(t * 3 + sh.bobOffset) * 3;
+    drawMushroom(sx, sh.y + bob, sh.w, sh.h);
+  }
+
+  // Partículas
+  for (const p of state.particles) {
+    ctx.globalAlpha = p.life / 30;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x - cx, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // Mario (pixel art)
+  const m = state.mario;
+  drawMario(m.x - cx, m.y, m.w, m.h, m.frame, m.onGround);
+
+  // Progresso HUD no canvas
+  drawProgressBar(W, H);
 }
 
-// ---------- WHATS ----------
-document.getElementById("whats").href =
-"https://wa.me/5534999999999?text=" +
-encodeURIComponent(
-"Confirmo presença no aniversário do Emanuel. Nome da criança: Emanuel. Estou ciente da entrega no local do evento."
-);
+// ==========================================
+// FUNÇÕES DE DESENHO
+// ==========================================
+function drawCloud(x, y, w) {
+  const h = w * 0.45;
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  ctx.beginPath();
+  ctx.ellipse(x + w*0.25, y + h*0.7, w*0.28, h*0.55, 0, 0, Math.PI*2);
+  ctx.ellipse(x + w*0.5,  y + h*0.5, w*0.32, h*0.65, 0, 0, Math.PI*2);
+  ctx.ellipse(x + w*0.75, y + h*0.7, w*0.22, h*0.5,  0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fillRect(x + w*0.1, y + h*0.6, w*0.8, h*0.4);
+}
 
+function drawGroundBlock(x, y, w, h) {
+  // Solo
+  ctx.fillStyle = '#8B4A0C';
+  ctx.fillRect(x, y, w, h);
+  // Grama no topo
+  ctx.fillStyle = '#4A9B1F';
+  ctx.fillRect(x, y, w, 16);
+  ctx.fillStyle = '#5CB832';
+  ctx.fillRect(x, y, w, 8);
+  // Linhas de tijolo
+  ctx.strokeStyle = '#6B3808';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x, y, w, h);
+}
+
+function drawBrick(x, y, w, h) {
+  ctx.fillStyle = '#C84B0C';
+  ctx.fillRect(x, y, w, h);
+  ctx.strokeStyle = '#8B3008';
+  ctx.lineWidth = 2;
+  // Grade de tijolos
+  for (let bx = x; bx < x + w; bx += 32) {
+    ctx.strokeRect(bx, y, 32, h);
+  }
+  ctx.beginPath();
+  ctx.moveTo(x, y + h/2);
+  ctx.lineTo(x + w, y + h/2);
+  ctx.stroke();
+}
+
+function drawPipe(x, y, w, h) {
+  // Corpo
+  const g = ctx.createLinearGradient(x, 0, x + w, 0);
+  g.addColorStop(0, '#005500');
+  g.addColorStop(0.3, '#00A800');
+  g.addColorStop(0.7, '#00A800');
+  g.addColorStop(1, '#003300');
+  ctx.fillStyle = g;
+  ctx.fillRect(x + 4, y + 16, w - 8, h - 16);
+  // Cabeça
+  ctx.fillStyle = '#00C000';
+  ctx.fillRect(x, y, w + 4, 18);
+  // Borda escura
+  ctx.strokeStyle = '#003300';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x + 4, y + 16, w - 8, h - 16);
+  ctx.strokeRect(x, y, w + 4, 18);
+}
+
+function drawMushroom(x, y, w, h) {
+  // Cabeça vermelha com pintas
+  ctx.fillStyle = '#E81818';
+  ctx.beginPath();
+  ctx.ellipse(x + w/2, y + h*0.45, w/2, h*0.48, 0, 0, Math.PI*2);
+  ctx.fill();
+  // Pintas brancas
+  ctx.fillStyle = 'white';
+  const spots = [{dx:0.2,dy:0.2,r:0.1},{dx:0.65,dy:0.15,r:0.08},{dx:0.75,dy:0.45,r:0.09},{dx:0.15,dy:0.48,r:0.08}];
+  for (const s of spots) {
+    ctx.beginPath();
+    ctx.arc(x + w*s.dx, y + h*s.dy, w*s.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+  // Rosto branco
+  ctx.fillStyle = '#FFE8C8';
+  ctx.beginPath();
+  ctx.ellipse(x + w/2, y + h*0.72, w*0.38, h*0.28, 0, 0, Math.PI*2);
+  ctx.fill();
+  // Olhos
+  ctx.fillStyle = '#181818';
+  ctx.beginPath();
+  ctx.arc(x + w*0.38, y + h*0.68, w*0.055, 0, Math.PI*2);
+  ctx.arc(x + w*0.62, y + h*0.68, w*0.055, 0, Math.PI*2);
+  ctx.fill();
+  // Sorriso
+  ctx.strokeStyle = '#181818';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(x + w/2, y + h*0.7, w*0.14, 0.2, Math.PI - 0.2);
+  ctx.stroke();
+}
+
+function drawMario(x, y, w, h, frame, onGround) {
+  // Baseado nas cores clássicas do Super Mario
+  const pxW = w / 12;
+  const pxH = h / 16;
+
+  function px(col, row, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x + col * pxW, y + row * pxH, pxW + 0.5, pxH + 0.5);
+  }
+
+  // Chapéu (vermelho)
+  const R = '#E81818', S = '#8B1818', W2 = '#FFDAB0', BR = '#6B3808', B = '#181818', BL = '#3050E0', YL = '#F8D030';
+
+  // Chapéu
+  for (let c = 3; c <= 8; c++) px(c, 0, R);
+  for (let c = 2; c <= 9; c++) px(c, 1, R);
+
+  // Cabelo + rosto
+  [3,4,5,6,7].forEach(c => px(c, 2, BR));
+  [2,3,4,5,6,7,8,9].forEach(c => px(c, 3, W2));
+  px(2,3,BR); px(9,3,BR);
+  // Olhos / nariz
+  px(4,4,B); px(6,4,B);
+  px(5,4,BR); px(7,3,BR);
+  // Bigode
+  [3,4,5,6,7,8].forEach(c => px(c, 5, BR));
+
+  // Corpo (azul macacão)
+  const bodyRow = onGround ? [6,7,8,9] : [6,7,8];
+  [5,6,7,8,9].forEach(c => bodyRow.forEach(r => px(c, r, BL)));
+  // Camisa vermelho
+  [3,4,5,6,7,8,9,10].forEach(c => px(c, 6, R));
+
+  // Braços
+  if (onGround && (frame===1||frame===3)) {
+    px(2,7,W2); px(2,8,W2);
+    px(10,7,W2); px(10,8,W2);
+  } else {
+    px(2,6,W2); px(2,7,W2);
+    px(10,6,W2); px(10,7,W2);
+  }
+
+  // Sapatos marrons
+  const legFrame = frame % 2;
+  if (onGround) {
+    if (legFrame===0) {
+      [4,5].forEach(c => px(c, 14, BR)); [4,5].forEach(c => px(c, 15, B));
+      [7,8].forEach(c => px(c, 14, BR)); [7,8].forEach(c => px(c, 15, B));
+    } else {
+      [3,4,5].forEach(c => px(c, 14, BR)); [3,4,5].forEach(c => px(c, 15, B));
+      [7,8].forEach(c => px(c, 13, BR));
+    }
+  } else {
+    // Pulo
+    [3,4,5].forEach(c => { px(c, 13, BR); px(c, 14, B); });
+    [8,9].forEach(c => { px(c, 12, BR); px(c, 13, B); });
+  }
+
+  // Botões dourados
+  px(6, 9, YL); px(7, 9, YL);
+}
+
+function drawGoalFlag(x, y) {
+  // Mastro
+  ctx.fillStyle = '#888';
+  ctx.fillRect(x + 6, y, 6, 160);
+  // Bandeira
+  ctx.fillStyle = '#E81818';
+  ctx.beginPath();
+  ctx.moveTo(x + 12, y);
+  ctx.lineTo(x + 60, y + 20);
+  ctx.lineTo(x + 12, y + 40);
+  ctx.closePath();
+  ctx.fill();
+  // Estrela
+  ctx.fillStyle = '#F8D030';
+  ctx.font = 'bold 22px sans-serif';
+  ctx.fillText('⭐', x + 14, y + 28);
+  // Base
+  ctx.fillStyle = '#00A800';
+  ctx.fillRect(x - 10, y + 160, 40, 20);
+}
+
+function drawProgressBar(W, H) {
+  const pct = state.score / TOTAL_MUSHROOMS;
+  const bW = Math.min(300, W * 0.5);
+  const bX = (W - bW) / 2;
+  const bY = 10;
+  const bH = 12;
+
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(bX - 2, bY - 2, bW + 4, bH + 4);
+  ctx.fillStyle = '#444';
+  ctx.fillRect(bX, bY, bW, bH);
+  ctx.fillStyle = '#F8D030';
+  ctx.fillRect(bX, bY, bW * pct, bH);
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 8px "Press Start 2P", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(`${state.score}/${TOTAL_MUSHROOMS} 🍄`, W/2, bY + bH + 16);
+  ctx.textAlign = 'left';
+}
+
+function spawnParticles(x, y, color) {
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2;
+    const speed = 3 + Math.random() * 4;
+    state.particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 3,
+      color,
+      size: 3 + Math.random() * 4,
+      life: 25 + Math.floor(Math.random() * 10)
+    });
+  }
+}
+
+function updateHud() {
+  document.getElementById('hudScore').textContent = `🍄 ${state.score}/${TOTAL_MUSHROOMS}`;
+}
+
+// ==========================================
+// VITÓRIA
+// ==========================================
+function showWin() {
+  document.getElementById('winModal').classList.add('show');
+}
+
+function openMap() {
+  const addr = 'Av.+Santo+Afonso,+90+Campos+Elíseos+Varginha+MG';
+  window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Av. Santo Afonso, 90, Campos Elíseos, Varginha, MG')}`, '_blank');
+}
+
+function openWhatsApp() {
+  const msg = encodeURIComponent(
+    'Confirmo a presença no aniversário do Emanuel na data e hora mencionados, e tenho ciência que irei deixar meu filho neste incrível universo de diversão e alegria! 🍄🎂\n\nNome da criança: '
+  );
+  // Substitua pelo número real (somente dígitos, com DDI 55)
+  window.open(`https://wa.me/5535999999999?text=${msg}`, '_blank');
+}
 </script>
+
+<!-- ===== RODAPÉ (visível após scroll ou no final) ===== -->
+<!-- Rodapé embutido no modal de vitória, mas também colocamos no DOM para acessibilidade -->
+<footer id="pageFooter" style="display:none;background:#000;color:#FFE066;font-family:'Press Start 2P',monospace;padding:32px 20px;text-align:center;font-size:clamp(0.45rem,1.8vw,0.75rem);line-height:2.4;border-top:4px solid #E81818;">
+  <p style="font-size:1.5em;margin-bottom:12px;">👑🍄 CONVITE OFICIAL DO REINO DOS COGUMELOS 🍄👑</p>
+  <p style="color:white;">Atenção, convidados especiais!<br>Você foi chamado para uma missão muito importante no Reino dos Cogumelos!</p>
+  <br>
+  <p style="color:#7AFF7A;">🎂 MISSÃO: ANIVERSÁRIO DO EMANUEL</p>
+  <p style="color:white;">📅 Data: <span style="color:#FFE066;">18 de julho</span> &nbsp;🕔 Horário: <span style="color:#FFE066;">17h às 21h</span></p>
+  <p style="color:white;">📍 Av. Santo Afonso, 90 – Bairro Campos Elíseos &nbsp; 📌 Varginha – MG</p>
+  <br>
+  <p style="color:#FFB347;">⚠️ IMPORTANTE</p>
+  <p style="color:white;">As crianças devem ser deixadas no local pelos responsáveis.<br>A retirada deverá ser feita ao final do evento.</p>
+  <br>
+  <p style="color:#5CF8C8;">🎮 Siga o caminho da aventura até o final da fase para descobrir o local no mapa!</p>
+  <p style="color:#FFE066;font-size:1.1em;margin-top:16px;">📱 Confirme sua presença pelo WhatsApp!</p>
+</footer>
 
 </body>
 </html>
