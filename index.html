@@ -306,6 +306,11 @@
     0%,60% { opacity: 1; }
     100% { opacity: 0; }
   }
+
+  @keyframes scrollMsg {
+    0%   { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
 </style>
 </head>
 <body>
@@ -339,10 +344,15 @@
 <div id="gameWrapper">
   <div id="hud">
     <span>🍄 MARIO</span>
-    <span id="hudScore">COGUMELOS: 0/50</span>
+    <span id="hudScore">COGUMELOS: 0/4</span>
     <span>🌟 EMANUEL</span>
   </div>
   <canvas id="gameCanvas"></canvas>
+  <div id="hudMsg" style="background:#000080;color:#FFE066;font-family:'Press Start 2P',monospace;font-size:clamp(0.38rem,1.5vw,0.62rem);text-align:center;padding:5px 8px;border-top:3px solid #E81818;overflow:hidden;white-space:nowrap;">
+    <span style="display:inline-block;animation:scrollMsg 16s linear infinite;">
+      🎮 COLETE OS 4 COGUMELOS E CONCLUA A FASE PARA DESCOBRIR O DESTINO DO EVENTO E SE INSCREVER! &nbsp;&nbsp;&nbsp; 🍄 PULE OS OBSTÁCULOS E CHEGUE ATÉ O FIM! 🏁
+    </span>
+  </div>
 </div>
 
 <!-- ===== MODAL VITÓRIA ===== -->
@@ -394,7 +404,7 @@
 // ==========================================
 //  JOGO
 // ==========================================
-const TOTAL_MUSHROOMS = 50;
+const TOTAL_MUSHROOMS = 4;
 let gameStarted = false;
 let animId;
 
@@ -462,7 +472,7 @@ function initWorld() {
   const groundY = H - 80;
 
   // Mundo = 50 cogumelos espalhados, ~600px entre cada
-  const mushroomSpacing = 580;
+  const mushroomSpacing = 1400;
   state.worldWidth = TOTAL_MUSHROOMS * mushroomSpacing + W * 2;
 
   // Chão contínuo (blocos)
@@ -536,7 +546,7 @@ function initWorld() {
 
   // Nuvens decorativas
   state.clouds = [];
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 20; i++) {
     state.clouds.push({
       x: Math.random() * state.worldWidth,
       y: 30 + Math.random() * (H * 0.35),
