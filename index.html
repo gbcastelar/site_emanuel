@@ -11,17 +11,11 @@
 
   :root {
     --sky: #5C94FC;
-    --sky-dark: #2C6FC9;
-    --ground: #C84B0C;
-    --ground-top: #E8A830;
-    --coin: #F8D030;
     --mario-red: #E81818;
-    --white: #FAFAFA;
-    --black: #181818;
+    --coin: #F8D030;
     --green: #00B800;
     --dark-green: #007800;
-    --pipe-green: #00A800;
-    --cloud: #F8F8F8;
+    --black: #181818;
   }
 
   body {
@@ -38,17 +32,17 @@
   #startScreen {
     position: fixed;
     inset: 0;
-    overflow-y: auto;
     background: linear-gradient(180deg, #5C94FC 0%, #3a78e4 60%, #1a5cc8 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    gap: 0;
+    overflow-y: auto;
+    padding: 12px 0 20px;
   }
 
-  #startScreen .clouds-bg {
+  .clouds-bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -57,7 +51,6 @@
 
   .cloud-deco {
     position: absolute;
-    background: white;
     border-radius: 50px;
     opacity: 0.85;
     animation: floatCloud 12s linear infinite;
@@ -68,15 +61,35 @@
     to { transform: translateX(110vw); }
   }
 
-  #startScreen .title-block {
+  .title-block {
     background: rgba(0,0,0,0.55);
     border: 4px solid var(--coin);
     border-radius: 8px;
-    padding: 18px 28px;
+    padding: 14px 22px;
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
     animation: pulse 1.8s ease-in-out infinite;
     max-width: 90vw;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-block .crown { font-size: clamp(1.6rem,6vw,2.8rem); margin-bottom: 6px; }
+
+  .title-block h1 {
+    font-family: 'Press Start 2P', monospace;
+    color: var(--coin);
+    font-size: clamp(0.6rem, 3vw, 1.2rem);
+    line-height: 1.7;
+    text-shadow: 3px 3px 0 #8B4A00;
+  }
+
+  .title-block .sub {
+    font-family: 'Press Start 2P', monospace;
+    color: white;
+    font-size: clamp(0.45rem, 2vw, 0.75rem);
+    margin-top: 8px;
+    text-shadow: 2px 2px 0 #000;
   }
 
   @keyframes pulse {
@@ -84,65 +97,86 @@
     50% { transform: scale(1.03); }
   }
 
-  #startScreen .crown { font-size: clamp(2rem,7vw,3.5rem); margin-bottom: 6px; }
-
-  #startScreen h1 {
-    font-family: 'Press Start 2P', monospace;
-    color: var(--coin);
-    font-size: clamp(0.7rem, 3.5vw, 1.4rem);
-    line-height: 1.6;
-    text-shadow: 3px 3px 0 #8B4A00;
-    letter-spacing: 1px;
-  }
-
-  #startScreen .sub {
-    font-family: 'Press Start 2P', monospace;
-    color: white;
-    font-size: clamp(0.5rem, 2.5vw, 0.85rem);
-    margin-top: 10px;
-    text-shadow: 2px 2px 0 #000;
-  }
-
-  .mario-hero {
-    font-size: clamp(5rem, 22vw, 140px);
-    animation: marioIdle 0.6s steps(2) infinite;
-    filter: drop-shadow(4px 6px 0 rgba(0,0,0,0.5));
-    margin: 10px 0;
-    line-height: 1;
-  }
-
-  @keyframes marioIdle {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-6px); }
-  }
-
   .invite-preview {
     background: rgba(0,0,0,0.6);
     border: 3px solid #00B800;
     border-radius: 8px;
-    padding: 14px 20px;
+    padding: 12px 18px;
     max-width: 90vw;
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
   }
 
   .invite-preview p {
     font-family: 'Press Start 2P', monospace;
     color: white;
-    font-size: clamp(0.45rem, 2vw, 0.75rem);
-    line-height: 2;
+    font-size: clamp(0.42rem, 1.8vw, 0.7rem);
+    line-height: 2.1;
     text-shadow: 1px 1px 0 #000;
   }
 
-  .invite-preview .highlight {
-    color: var(--coin);
+  .invite-preview .highlight { color: var(--coin); }
+
+  .aviso-block {
+    background: #C00000;
+    border: 3px solid var(--coin);
+    border-radius: 8px;
+    padding: 12px 18px;
+    max-width: 90vw;
+    text-align: center;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+    animation: pulse 1.8s ease-in-out infinite;
   }
-    50% { transform: translateY(-5px); }
+
+  .aviso-block p {
+    font-family: 'Press Start 2P', monospace;
+    color: white;
+    font-size: clamp(0.42rem, 1.8vw, 0.68rem);
+    line-height: 2.2;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  .aviso-block .gold { color: var(--coin); }
+
+  /* Botão START */
+  #startBtn {
+    position: relative;
+    z-index: 2;
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.7rem, 3.2vw, 1.2rem);
+    background: var(--mario-red);
+    color: white;
+    border: none;
+    padding: 18px 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    border-bottom: 7px solid #8B0000;
+    text-shadow: 2px 2px 0 #000;
+    box-shadow: 0 8px 0 #8B0000, 0 12px 24px rgba(0,0,0,0.45);
+    letter-spacing: 1px;
+    animation: btnBounce 1s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 90vw;
   }
 
   #startBtn:active {
     transform: translateY(4px);
     box-shadow: 0 2px 0 #8B0000;
+    animation: none;
+  }
+
+  @keyframes btnBounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
   }
 
   /* ===== JOGO ===== */
@@ -155,30 +189,49 @@
 
   #gameWrapper.active { display: flex; }
 
-  /* HUD */
   #hud {
     background: #000;
     color: var(--coin);
     font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.5rem, 2vw, 0.85rem);
-    padding: 6px 16px;
+    font-size: clamp(0.5rem, 2vw, 0.8rem);
+    padding: 6px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-    z-index: 10;
     border-bottom: 3px solid var(--coin);
   }
 
-  #hud span { white-space: nowrap; }
+  #hudMsg {
+    background: #000080;
+    color: var(--coin);
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.38rem, 1.5vw, 0.6rem);
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 3px solid var(--mario-red);
+    overflow: hidden;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 
-  /* Canvas */
+  #hudMsg span {
+    display: inline-block;
+    animation: scrollMsg 16s linear infinite;
+  }
+
+  @keyframes scrollMsg {
+    0%   { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
   #gameCanvas {
     display: block;
     width: 100%;
     flex: 1;
     image-rendering: pixelated;
     touch-action: none;
+    min-height: 0;
   }
 
   /* Modal vitória */
@@ -191,146 +244,99 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
     padding: 20px;
   }
 
   #winModal.show { display: flex; }
 
-  #winModal .win-box {
+  .win-box {
     background: #000080;
     border: 5px solid var(--coin);
     border-radius: 10px;
-    padding: 24px 30px;
+    padding: 24px 28px;
     text-align: center;
-    max-width: 480px;
+    max-width: 460px;
     width: 100%;
   }
 
-  #winModal h2 {
+  .win-box h2 {
     font-family: 'Press Start 2P', monospace;
     color: var(--coin);
-    font-size: clamp(0.9rem, 4vw, 1.4rem);
+    font-size: clamp(0.8rem, 3.5vw, 1.3rem);
     margin-bottom: 14px;
     text-shadow: 3px 3px 0 #8B4A00;
     animation: pulse 1.5s ease-in-out infinite;
   }
 
-  #winModal p {
+  .win-box p {
     font-family: 'Press Start 2P', monospace;
     color: white;
-    font-size: clamp(0.5rem, 2vw, 0.75rem);
-    line-height: 2.2;
-    margin-bottom: 16px;
+    font-size: clamp(0.45rem, 1.8vw, 0.7rem);
+    line-height: 2.4;
+    margin-bottom: 18px;
   }
 
-  .win-btns {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-  }
+  .win-btns { display: flex; flex-direction: column; gap: 12px; }
 
   .win-btn {
     font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.6rem, 2.5vw, 0.9rem);
-    padding: 14px 24px;
+    font-size: clamp(0.55rem, 2.2vw, 0.85rem);
+    padding: 14px 20px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    width: 100%;
-    max-width: 340px;
     text-shadow: 1px 1px 0 #000;
-    transition: transform 0.1s;
+    color: white;
   }
 
   .win-btn:active { transform: scale(0.96); }
 
   .btn-map {
     background: var(--green);
-    color: white;
     border-bottom: 5px solid var(--dark-green);
     box-shadow: 0 4px 0 var(--dark-green);
   }
 
   .btn-whatsapp {
     background: #25D366;
-    color: white;
     border-bottom: 5px solid #1da851;
     box-shadow: 0 4px 0 #1da851;
   }
 
-  /* Rodapé */
-  #footer {
-    display: none;
-  }
-
-  /* Touch hint */
   #touchHint {
     position: fixed;
-    bottom: 80px;
+    bottom: 70px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.75);
     color: white;
     font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.4rem, 1.8vw, 0.65rem);
+    font-size: clamp(0.38rem, 1.6vw, 0.6rem);
     padding: 8px 14px;
     border-radius: 6px;
     pointer-events: none;
     z-index: 5;
-    animation: fadeHint 3s ease forwards;
+    animation: fadeHint 3.5s ease forwards;
     text-align: center;
+    white-space: nowrap;
   }
 
   @keyframes fadeHint {
     0%,60% { opacity: 1; }
     100% { opacity: 0; }
   }
-
-  @keyframes scrollMsg {
-    0%   { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
-  }
 </style>
 </head>
 <body>
 
 <!-- ===== TELA INICIAL ===== -->
-<div id="startScreen" onclick="startGame()" style="cursor:pointer;">
+<div id="startScreen">
   <div class="clouds-bg" id="cloudsBg"></div>
 
   <div class="title-block">
     <div class="crown">👑🍄</div>
     <h1>CONVITE OFICIAL<br>DO REINO DOS<br>COGUMELOS</h1>
     <p class="sub">🎂 MISSÃO: ANIVERSÁRIO</p>
-  </div>
-
-  <div class="mario-hero" style="font-size:unset;animation:none;filter:none;margin:14px 0;">
-    <button id="startBtn" onclick="startGame()" style="
-      font-family:'Press Start 2P',monospace;
-      font-size:clamp(0.85rem,4vw,1.4rem);
-      background:var(--mario-red);
-      color:white;
-      border:none;
-      padding:18px 38px;
-      border-radius:8px;
-      cursor:pointer;
-      border-bottom:7px solid #8B0000;
-      text-shadow:2px 2px 0 #000;
-      box-shadow:0 8px 0 #8B0000, 0 12px 24px rgba(0,0,0,0.45);
-      letter-spacing:2px;
-      animation:btnBounce 1s ease-in-out infinite;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:10px;
-    ">
-      <span style="font-size:clamp(2rem,10vw,3.5rem);line-height:1;">▶️</span>
-      PRESSIONAR START<br>
-      <span style="color:#FFE066;font-size:0.75em;">PARA INICIAR O JOGO</span><br>
-      <span style="color:rgba(255,255,255,0.8);font-size:0.6em;">E CHEGAR AO SEU DESTINO</span>
-    </button>
   </div>
 
   <div class="invite-preview">
@@ -342,28 +348,43 @@
       Campos Elíseos · Varginha-MG
     </p>
   </div>
-  <div style="background:#E81818;border:3px solid #FFE066;border-radius:8px;padding:12px 18px;max-width:90vw;text-align:center;margin-bottom:14px;animation:pulse 1.8s ease-in-out infinite;">
+
+  <div class="aviso-block">
+    <p>
+      ⚠️ <span class="gold">ATENÇÃO RESPONSÁVEIS</span> ⚠️<br>
+      A criança deverá ser<br>
+      <span class="gold">DEIXADA no local</span><br>
+      pelo responsável e<br>
+      <span class="gold">RESGATADA ao fim</span><br>
+      da missão! 🕔 <span class="gold">FIM: 21H</span>
+    </p>
+  </div>
+
+  <button id="startBtn" onclick="startGame()">
+    <span style="font-size:clamp(2rem,9vw,3rem);line-height:1;">▶️</span>
+    PRESSIONAR START<br>
+    <span style="color:#FFE066;font-size:0.8em;">PARA INICIAR O JOGO</span>
+    <span style="color:rgba(255,255,255,0.85);font-size:0.65em;">E CHEGAR AO SEU DESTINO</span>
+  </button>
 </div>
 
 <!-- ===== JOGO ===== -->
 <div id="gameWrapper">
   <div id="hud">
     <span>🍄 MARIO</span>
-    <span id="hudScore">COGUMELOS: 0/4</span>
+    <span id="hudScore">🍄 0/4</span>
     <span>🌟 EMANUEL</span>
   </div>
-  <canvas id="gameCanvas"></canvas>
-  <div id="hudMsg" style="background:#000080;color:#FFE066;font-family:'Press Start 2P',monospace;font-size:clamp(0.38rem,1.5vw,0.62rem);text-align:center;padding:5px 8px;border-top:3px solid #E81818;overflow:hidden;white-space:nowrap;">
-    <span style="display:inline-block;animation:scrollMsg 16s linear infinite;">
-      🎮 COLETE OS 4 COGUMELOS E CONCLUA A FASE PARA DESCOBRIR O DESTINO DO EVENTO E SE INSCREVER! &nbsp;&nbsp;&nbsp; 🍄 PULE OS OBSTÁCULOS E CHEGUE ATÉ O FIM! 🏁
-    </span>
+  <div id="hudMsg">
+    <span>🎮 COLETE OS 4 COGUMELOS E CONCLUA A FASE PARA DESCOBRIR O DESTINO E SE INSCREVER NO EVENTO! &nbsp;&nbsp;&nbsp;&nbsp; 🍄 PULE OS OBSTÁCULOS E CHEGUE ATÉ O FIM! 🏁 &nbsp;&nbsp;&nbsp;&nbsp;</span>
   </div>
+  <canvas id="gameCanvas"></canvas>
 </div>
 
 <!-- ===== MODAL VITÓRIA ===== -->
 <div id="winModal">
   <div class="win-box">
-    <div style="font-size:3rem;margin-bottom:8px;">🎉🍄🎂</div>
+    <div style="font-size:2.5rem;margin-bottom:8px;">🎉🍄🎂</div>
     <h2>FASE CONCLUÍDA!</h2>
     <p>
       PARABÉNS!<br>
@@ -374,7 +395,7 @@
       Campos Elíseos · Varginha-MG
     </p>
     <div class="win-btns">
-      <button class="win-btn btn-map" onclick="openMap()">📍 VER NO MAPA</button>
+      <button class="win-btn btn-map" onclick="openMap()">📍 VER LOCAL NO MAPA</button>
       <button class="win-btn btn-whatsapp" onclick="openWhatsApp()">📱 CONFIRMAR PRESENÇA</button>
     </div>
   </div>
@@ -382,85 +403,63 @@
 
 <script>
 // ==========================================
-//  NUVENS DECORATIVAS NA TELA INICIAL
+// NUVENS TELA INICIAL
 // ==========================================
-(function buildClouds() {
+(function(){
   const bg = document.getElementById('cloudsBg');
-  const configs = [
-    { top:'10%', size:80, delay:0, dur:14 },
-    { top:'22%', size:50, delay:5, dur:18 },
-    { top:'5%',  size:60, delay:9, dur:16 },
-    { top:'35%', size:40, delay:2, dur:20 },
-  ];
-  configs.forEach(c => {
-    const d = document.createElement('div');
-    d.className = 'cloud-deco';
-    d.style.cssText = `top:${c.top};width:${c.size*2}px;height:${c.size*0.6}px;animation-delay:-${c.delay}s;animation-duration:${c.dur}s;left:-200px;`;
+  [{top:'8%',w:160,delay:0,dur:14},{top:'20%',w:100,delay:5,dur:18},{top:'4%',w:120,delay:9,dur:16},{top:'32%',w:80,delay:2,dur:20}]
+  .forEach(c=>{
+    const d=document.createElement('div');
+    d.className='cloud-deco';
+    d.style.cssText=`top:${c.top};width:${c.w}px;height:${c.w*0.42}px;animation-delay:-${c.delay}s;animation-duration:${c.dur}s;left:-200px;background:white;`;
+    for(let i=0;i<3;i++){const p=document.createElement('div');p.style.cssText=`position:absolute;width:${c.w*(0.5+i*0.15)}px;height:${c.w*(0.5+i*0.15)}px;background:white;border-radius:50%;bottom:0;left:${i*c.w*0.28}px;`;d.appendChild(p);}
     bg.appendChild(d);
-    // puffs
-    for (let i=0;i<3;i++){
-      const p=document.createElement('div');
-      p.style.cssText=`position:absolute;width:${c.size*(0.6+i*0.15)}px;height:${c.size*(0.6+i*0.15)}px;background:white;border-radius:50%;bottom:0;left:${i*c.size*0.35}px;opacity:0.9;`;
-      d.appendChild(p);
-    }
   });
 })();
 
 // ==========================================
-//  JOGO
+// VARIÁVEIS GLOBAIS
 // ==========================================
 const TOTAL_MUSHROOMS = 4;
 let gameStarted = false;
-let animId;
+let animId = null;
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Estado do jogo
-let state = {
-  score: 0,
-  mario: null,
-  platforms: [],
-  mushrooms: [],
-  coins: [],
-  clouds: [],
-  pipes: [],
-  cameraX: 0,
-  worldWidth: 0,
-  won: false,
-  particles: []
-};
-
-// Constantes de física
 const GRAVITY = 0.55;
 const JUMP_FORCE = -13;
 const MARIO_SPEED = 4;
-let jumpPressed = false;
-let keys = {};
 
+let state = {};
+
+// ==========================================
+// INICIAR JOGO
+// ==========================================
 function startGame() {
   document.getElementById('startScreen').style.display = 'none';
-  const gw = document.getElementById('gameWrapper');
-  gw.classList.add('active');
+  document.getElementById('gameWrapper').classList.add('active');
 
-  resizeCanvas();
-  initWorld();
-  bindInput();
-  gameStarted = true;
+  setTimeout(() => {
+    resizeCanvas();
+    initWorld();
+    bindInput();
+    gameStarted = true;
 
-  // hint toque
-  const hint = document.createElement('div');
-  hint.id = 'touchHint';
-  hint.textContent = '👆 TOQUE NA TELA OU ESPAÇO PARA PULAR';
-  document.body.appendChild(hint);
-  setTimeout(()=>hint.remove(), 3500);
+    const hint = document.createElement('div');
+    hint.id = 'touchHint';
+    hint.textContent = '👆 TOQUE NA TELA OU ESPAÇO PARA PULAR';
+    document.body.appendChild(hint);
+    setTimeout(() => { if(hint.parentNode) hint.parentNode.removeChild(hint); }, 4000);
 
-  loop();
+    if(animId) cancelAnimationFrame(animId);
+    loop();
+  }, 50);
 }
 
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - document.getElementById('hud').offsetHeight;
+  canvas.width  = canvas.offsetWidth  || window.innerWidth;
+  canvas.height = canvas.offsetHeight || window.innerHeight - 80;
 }
 
 window.addEventListener('resize', () => {
@@ -469,101 +468,60 @@ window.addEventListener('resize', () => {
 });
 
 // ==========================================
-// CONSTRUÇÃO DO MUNDO
+// MUNDO
 // ==========================================
 function initWorld() {
   const W = canvas.width;
   const H = canvas.height;
   const groundY = H - 80;
+  const spacing = 1200;
 
-  // Mundo = 50 cogumelos espalhados, ~600px entre cada
-  const mushroomSpacing = 1400;
-  state.worldWidth = TOTAL_MUSHROOMS * mushroomSpacing + W * 2;
-
-  // Chão contínuo (blocos)
-  state.platforms = [];
-  for (let x = 0; x < state.worldWidth; x += 64) {
-    state.platforms.push({ x, y: groundY, w: 64, h: 80, type: 'ground' });
-  }
-
-  // Mario
-  state.mario = {
-    x: 100, y: groundY - 80,
-    w: 52, h: 72,
-    vx: MARIO_SPEED, vy: 0,
-    onGround: false,
-    jumping: false,
-    frame: 0, frameTick: 0,
-    direction: 1,
-    dead: false
+  state = {
+    score: 0,
+    mario: { x:100, y:groundY-80, w:52, h:72, vx:MARIO_SPEED, vy:0, onGround:false, frame:0, frameTick:0 },
+    platforms: [],
+    mushrooms: [],
+    pipes: [],
+    clouds: [],
+    particles: [],
+    goalX: TOTAL_MUSHROOMS * spacing + W + 400,
+    worldWidth: TOTAL_MUSHROOMS * spacing + W * 3,
+    cameraX: 0,
+    won: false
   };
 
-  // Gera plataformas flutuantes e cogumelos
-  state.mushrooms = [];
-  state.pipes = [];
-  const usedX = new Set();
+  // Chão
+  for(let x=0; x<state.worldWidth; x+=64)
+    state.platforms.push({x, y:groundY, w:64, h:80, type:'ground'});
 
-  for (let i = 0; i < TOTAL_MUSHROOMS; i++) {
-    const baseX = W + i * mushroomSpacing + 200;
-
-    // Tipo aleatório de obstáculo
-    const type = Math.floor(Math.random() * 3);
+  // Cogumelos + obstáculos
+  const types = [0,1,2,0]; // variar os tipos
+  for(let i=0;i<TOTAL_MUSHROOMS;i++){
+    const baseX = W + i*spacing + 300;
+    const t = types[i];
     let mX, mY;
-
-    if (type === 0) {
-      // Plataforma no ar
-      const platW = 120 + Math.random() * 80;
-      const platY = groundY - 120 - Math.random() * 100;
-      state.platforms.push({ x: baseX, y: platY, w: platW, h: 20, type: 'brick' });
-      mX = baseX + platW / 2 - 24;
-      mY = platY - 56;
-    } else if (type === 1) {
-      // Cano (obstáculo)
-      const pipeH = 80 + Math.random() * 60;
-      state.pipes.push({ x: baseX, y: groundY - pipeH, w: 64, h: pipeH });
-      // Cogumelo ao lado
-      const platW = 100;
-      const platY2 = groundY - pipeH - 60;
-      state.platforms.push({ x: baseX + 80, y: platY2, w: platW, h: 20, type: 'brick' });
-      mX = baseX + 80 + 26;
-      mY = platY2 - 56;
+    if(t===0){
+      const pw=130, py=groundY-130;
+      state.platforms.push({x:baseX, y:py, w:pw, h:20, type:'brick'});
+      mX=baseX+pw/2-24; mY=py-56;
+    } else if(t===1){
+      const ph=90;
+      state.pipes.push({x:baseX, y:groundY-ph, w:64, h:ph});
+      const py=groundY-ph-70;
+      state.platforms.push({x:baseX+90, y:py, w:110, h:20, type:'brick'});
+      mX=baseX+90+35; mY=py-56;
     } else {
-      // Plataforma dupla
-      const platY3 = groundY - 140 - Math.random() * 80;
-      state.platforms.push({ x: baseX, y: platY3, w: 100, h: 20, type: 'brick' });
-      mX = baseX + 26;
-      mY = platY3 - 56;
+      const py=groundY-150;
+      state.platforms.push({x:baseX, y:py, w:120, h:20, type:'brick'});
+      mX=baseX+36; mY=py-56;
     }
-
-    state.mushrooms.push({
-      x: mX, y: mY,
-      w: 48, h: 48,
-      collected: false,
-      bobOffset: Math.random() * Math.PI * 2,
-      index: i
-    });
+    state.mushrooms.push({x:mX, y:mY, w:48, h:48, collected:false, bobOffset:i*1.3});
   }
 
-  // Plataforma final com bandeira
-  const endX = state.worldWidth - 300;
-  state.platforms.push({ x: endX, y: groundY - 160, w: 200, h: 20, type: 'brick' });
-  state.goalX = endX;
+  // Nuvens
+  for(let i=0;i<20;i++)
+    state.clouds.push({x:Math.random()*state.worldWidth, y:20+Math.random()*(H*0.3), w:80+Math.random()*120, speed:0.3+Math.random()*0.4});
 
-  // Nuvens decorativas
-  state.clouds = [];
-  for (let i = 0; i < 20; i++) {
-    state.clouds.push({
-      x: Math.random() * state.worldWidth,
-      y: 30 + Math.random() * (H * 0.35),
-      w: 80 + Math.random() * 120,
-      speed: 0.3 + Math.random() * 0.5
-    });
-  }
-
-  state.particles = [];
-  state.won = false;
-  state.score = 0;
-  state.cameraX = 0;
   updateHud();
 }
 
@@ -572,35 +530,22 @@ function initWorld() {
 // ==========================================
 function bindInput() {
   document.addEventListener('keydown', e => {
-    keys[e.code] = true;
-    if ((e.code === 'Space' || e.code === 'ArrowUp') && !jumpPressed) {
-      doJump();
-      e.preventDefault();
-    }
+    if(e.code==='Space'||e.code==='ArrowUp'){ doJump(); e.preventDefault(); }
   });
-  document.addEventListener('keyup', e => { keys[e.code] = false; });
-
-  canvas.addEventListener('touchstart', e => {
-    e.preventDefault();
-    doJump();
-  }, { passive: false });
-
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); doJump(); }, {passive:false});
   canvas.addEventListener('click', () => doJump());
 }
 
 function doJump() {
-  if (state.won || !state.mario) return;
-  const m = state.mario;
-  if (m.onGround) {
-    m.vy = JUMP_FORCE;
-    m.onGround = false;
-    jumpPressed = true;
-    setTimeout(() => { jumpPressed = false; }, 300);
+  if(!state.mario || state.won) return;
+  if(state.mario.onGround){
+    state.mario.vy = JUMP_FORCE;
+    state.mario.onGround = false;
   }
 }
 
 // ==========================================
-// LOOP PRINCIPAL
+// LOOP
 // ==========================================
 function loop() {
   update();
@@ -609,418 +554,254 @@ function loop() {
 }
 
 function update() {
-  if (state.won) return;
+  if(state.won) return;
   const m = state.mario;
   const H = canvas.height;
   const groundY = H - 80;
 
-  // Movimento automático + física
   m.x += m.vx;
   m.vy += GRAVITY;
   m.y += m.vy;
-
   m.onGround = false;
 
-  // Colisão com plataformas
-  for (const p of state.platforms) {
-    if (rectOverlap(m, p)) {
-      // Colisão de cima
-      if (m.vy >= 0 && m.y + m.h - m.vy <= p.y + 4) {
-        m.y = p.y - m.h;
-        m.vy = 0;
-        m.onGround = true;
-      }
+  for(const p of state.platforms){
+    if(overlap(m,p) && m.vy>=0 && m.y+m.h-m.vy <= p.y+6){
+      m.y = p.y - m.h;
+      m.vy = 0;
+      m.onGround = true;
     }
   }
 
-  // Limite inferior (chão fallback)
-  if (m.y >= groundY - m.h) {
-    m.y = groundY - m.h;
-    m.vy = 0;
-    m.onGround = true;
-  }
+  if(m.y >= groundY - m.h){ m.y = groundY-m.h; m.vy=0; m.onGround=true; }
 
-  // Câmera suave
-  const targetCam = m.x - canvas.width * 0.3;
-  state.cameraX += (targetCam - state.cameraX) * 0.12;
-  if (state.cameraX < 0) state.cameraX = 0;
+  // Câmera
+  const target = m.x - canvas.width*0.3;
+  state.cameraX += (target - state.cameraX)*0.12;
+  if(state.cameraX<0) state.cameraX=0;
 
-  // Coleta de cogumelos
-  for (const sh of state.mushrooms) {
-    if (sh.collected) continue;
-    if (rectOverlap(m, sh)) {
-      sh.collected = true;
-      state.score++;
+  // Cogumelos
+  for(const sh of state.mushrooms){
+    if(!sh.collected && overlap(m,sh)){
+      sh.collected=true; state.score++;
+      spawnParticles(sh.x+sh.w/2, sh.y+sh.h/2);
       updateHud();
-      spawnParticles(sh.x + sh.w/2, sh.y + sh.h/2, '#E53030');
-      spawnParticles(sh.x + sh.w/2, sh.y + sh.h/2, '#F8D030');
     }
   }
 
-  // Chegou ao fim
-  if (m.x > state.goalX + 80 && !state.won) {
-    state.won = true;
+  // Vitória
+  if(m.x > state.goalX && !state.won){
+    state.won=true;
     setTimeout(showWin, 800);
   }
 
-  // Animação mario
+  // Animação
   m.frameTick++;
-  if (m.frameTick > 6) { m.frame = (m.frame + 1) % 4; m.frameTick = 0; }
+  if(m.frameTick>6){ m.frame=(m.frame+1)%4; m.frameTick=0; }
 
   // Partículas
-  for (let i = state.particles.length - 1; i >= 0; i--) {
-    const p = state.particles[i];
-    p.x += p.vx; p.y += p.vy; p.vy += 0.3;
-    p.life--;
-    if (p.life <= 0) state.particles.splice(i, 1);
+  for(let i=state.particles.length-1;i>=0;i--){
+    const p=state.particles[i];
+    p.x+=p.vx; p.y+=p.vy; p.vy+=0.3; p.life--;
+    if(p.life<=0) state.particles.splice(i,1);
   }
 
   // Nuvens
-  for (const c of state.clouds) {
-    c.x -= c.speed;
-    if (c.x + c.w < 0) c.x = state.worldWidth;
-  }
+  for(const c of state.clouds){ c.x-=c.speed; if(c.x+c.w<0) c.x=state.worldWidth; }
 }
 
-function rectOverlap(a, b) {
-  return a.x < b.x + b.w && a.x + a.w > b.x &&
-         a.y < b.y + b.h && a.y + a.h > b.y;
+function overlap(a,b){
+  return a.x<b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y;
 }
 
 // ==========================================
-// DESENHO
+// DRAW
 // ==========================================
 function draw() {
-  const W = canvas.width;
-  const H = canvas.height;
-  const cx = state.cameraX;
-  const groundY = H - 80;
+  const W=canvas.width, H=canvas.height, cx=state.cameraX;
+  const groundY=H-80;
 
-  ctx.clearRect(0, 0, W, H);
-
-  // Céu gradiente
-  const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
-  skyGrad.addColorStop(0, '#5C94FC');
-  skyGrad.addColorStop(0.7, '#7AACFF');
-  skyGrad.addColorStop(1, '#aac8ff');
-  ctx.fillStyle = skyGrad;
-  ctx.fillRect(0, 0, W, H);
+  // Céu
+  const sky=ctx.createLinearGradient(0,0,0,H);
+  sky.addColorStop(0,'#5C94FC'); sky.addColorStop(1,'#aac8ff');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
 
   // Nuvens
-  for (const c of state.clouds) {
-    const sx = c.x - cx;
-    if (sx > W + 200 || sx + c.w < -200) continue;
-    drawCloud(sx, c.y, c.w);
+  for(const c of state.clouds){
+    const sx=c.x-cx;
+    if(sx>W+200||sx+c.w<-200) continue;
+    drawCloud(sx,c.y,c.w);
   }
 
-  // Chão (só o visível)
-  for (const p of state.platforms) {
-    const sx = p.x - cx;
-    if (sx > W + 70 || sx + p.w < -70) continue;
-    if (p.type === 'ground') {
-      drawGroundBlock(sx, p.y, p.w, p.h);
-    } else {
-      drawBrick(sx, p.y, p.w, p.h);
-    }
+  // Plataformas
+  for(const p of state.platforms){
+    const sx=p.x-cx;
+    if(sx>W+70||sx+p.w<-70) continue;
+    p.type==='ground' ? drawGround(sx,p.y,p.w,p.h) : drawBrick(sx,p.y,p.w,p.h);
   }
 
   // Canos
-  for (const pipe of state.pipes) {
-    const sx = pipe.x - cx;
-    if (sx > W + 70 || sx + pipe.w < -70) continue;
-    drawPipe(sx, pipe.y, pipe.w, pipe.h);
+  for(const p of state.pipes){
+    const sx=p.x-cx;
+    if(sx>W+70||sx+p.w<-70) continue;
+    drawPipe(sx,p.y,p.w,p.h);
   }
 
-  // Bandeira do final
-  const gsx = state.goalX - cx;
-  if (gsx > -100 && gsx < W + 100) {
-    drawGoalFlag(gsx, groundY - 200);
-  }
+  // Bandeira final
+  const gsx=state.goalX-cx;
+  if(gsx>-100&&gsx<W+200) drawFlag(gsx, groundY-180);
 
   // Cogumelos
-  const t = Date.now() / 1000;
-  for (const sh of state.mushrooms) {
-    if (sh.collected) continue;
-    const sx = sh.x - cx;
-    if (sx > W + 60 || sx + sh.w < -60) continue;
-    const bob = Math.sin(t * 3 + sh.bobOffset) * 3;
-    drawMushroom(sx, sh.y + bob, sh.w, sh.h);
+  const t=Date.now()/1000;
+  for(const sh of state.mushrooms){
+    if(sh.collected) continue;
+    const sx=sh.x-cx;
+    if(sx>W+60||sx+sh.w<-60) continue;
+    const bob=Math.sin(t*3+sh.bobOffset)*3;
+    drawMushroom(sx, sh.y+bob, sh.w, sh.h);
   }
 
   // Partículas
-  for (const p of state.particles) {
-    ctx.globalAlpha = p.life / 30;
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x - cx, p.y, p.size, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
+  for(const p of state.particles){
+    ctx.globalAlpha=p.life/30;
+    ctx.fillStyle=p.color;
+    ctx.beginPath(); ctx.arc(p.x-cx,p.y,p.size,0,Math.PI*2); ctx.fill();
   }
+  ctx.globalAlpha=1;
 
-  // Mario (pixel art)
-  const m = state.mario;
-  drawMario(m.x - cx, m.y, m.w, m.h, m.frame, m.onGround);
+  // Mario
+  const m=state.mario;
+  drawMario(m.x-cx, m.y, m.w, m.h, m.frame, m.onGround);
 
-  // Progresso HUD no canvas
-  drawProgressBar(W, H);
+  // Barra progresso
+  drawProgress(W);
 }
 
-// ==========================================
-// FUNÇÕES DE DESENHO
-// ==========================================
-function drawCloud(x, y, w) {
-  const h = w * 0.45;
-  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+function drawCloud(x,y,w){
+  ctx.fillStyle='rgba(255,255,255,0.92)';
   ctx.beginPath();
-  ctx.ellipse(x + w*0.25, y + h*0.7, w*0.28, h*0.55, 0, 0, Math.PI*2);
-  ctx.ellipse(x + w*0.5,  y + h*0.5, w*0.32, h*0.65, 0, 0, Math.PI*2);
-  ctx.ellipse(x + w*0.75, y + h*0.7, w*0.22, h*0.5,  0, 0, Math.PI*2);
+  ctx.ellipse(x+w*.25,y+w*.22,w*.28,w*.2,0,0,Math.PI*2);
+  ctx.ellipse(x+w*.5, y+w*.15,w*.32,w*.24,0,0,Math.PI*2);
+  ctx.ellipse(x+w*.75,y+w*.22,w*.22,w*.18,0,0,Math.PI*2);
   ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.fillRect(x + w*0.1, y + h*0.6, w*0.8, h*0.4);
+  ctx.fillRect(x+w*.1,y+w*.22,w*.8,w*.16);
 }
 
-function drawGroundBlock(x, y, w, h) {
-  // Solo
-  ctx.fillStyle = '#8B4A0C';
-  ctx.fillRect(x, y, w, h);
-  // Grama no topo
-  ctx.fillStyle = '#4A9B1F';
-  ctx.fillRect(x, y, w, 16);
-  ctx.fillStyle = '#5CB832';
-  ctx.fillRect(x, y, w, 8);
-  // Linhas de tijolo
-  ctx.strokeStyle = '#6B3808';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(x, y, w, h);
+function drawGround(x,y,w,h){
+  ctx.fillStyle='#8B4A0C'; ctx.fillRect(x,y,w,h);
+  ctx.fillStyle='#4A9B1F'; ctx.fillRect(x,y,w,14);
+  ctx.fillStyle='#5CB832'; ctx.fillRect(x,y,w,7);
+  ctx.strokeStyle='#6B3808'; ctx.lineWidth=1; ctx.strokeRect(x,y,w,h);
 }
 
-function drawBrick(x, y, w, h) {
-  ctx.fillStyle = '#C84B0C';
-  ctx.fillRect(x, y, w, h);
-  ctx.strokeStyle = '#8B3008';
-  ctx.lineWidth = 2;
-  // Grade de tijolos
-  for (let bx = x; bx < x + w; bx += 32) {
-    ctx.strokeRect(bx, y, 32, h);
-  }
-  ctx.beginPath();
-  ctx.moveTo(x, y + h/2);
-  ctx.lineTo(x + w, y + h/2);
-  ctx.stroke();
+function drawBrick(x,y,w,h){
+  ctx.fillStyle='#C84B0C'; ctx.fillRect(x,y,w,h);
+  ctx.strokeStyle='#8B3008'; ctx.lineWidth=2;
+  for(let bx=x;bx<x+w;bx+=32) ctx.strokeRect(bx,y,32,h);
+  ctx.beginPath(); ctx.moveTo(x,y+h/2); ctx.lineTo(x+w,y+h/2); ctx.stroke();
 }
 
-function drawPipe(x, y, w, h) {
-  // Corpo
-  const g = ctx.createLinearGradient(x, 0, x + w, 0);
-  g.addColorStop(0, '#005500');
-  g.addColorStop(0.3, '#00A800');
-  g.addColorStop(0.7, '#00A800');
-  g.addColorStop(1, '#003300');
-  ctx.fillStyle = g;
-  ctx.fillRect(x + 4, y + 16, w - 8, h - 16);
-  // Cabeça
-  ctx.fillStyle = '#00C000';
-  ctx.fillRect(x, y, w + 4, 18);
-  // Borda escura
-  ctx.strokeStyle = '#003300';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(x + 4, y + 16, w - 8, h - 16);
-  ctx.strokeRect(x, y, w + 4, 18);
+function drawPipe(x,y,w,h){
+  const g=ctx.createLinearGradient(x,0,x+w,0);
+  g.addColorStop(0,'#005500'); g.addColorStop(.35,'#00A800'); g.addColorStop(.65,'#00A800'); g.addColorStop(1,'#003300');
+  ctx.fillStyle=g; ctx.fillRect(x+4,y+18,w-8,h-18);
+  ctx.fillStyle='#00C000'; ctx.fillRect(x,y,w+4,20);
+  ctx.strokeStyle='#003300'; ctx.lineWidth=2;
+  ctx.strokeRect(x+4,y+18,w-8,h-18); ctx.strokeRect(x,y,w+4,20);
 }
 
-function drawMushroom(x, y, w, h) {
-  // Cabeça vermelha com pintas
-  ctx.fillStyle = '#E81818';
-  ctx.beginPath();
-  ctx.ellipse(x + w/2, y + h*0.45, w/2, h*0.48, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Pintas brancas
-  ctx.fillStyle = 'white';
-  const spots = [{dx:0.2,dy:0.2,r:0.1},{dx:0.65,dy:0.15,r:0.08},{dx:0.75,dy:0.45,r:0.09},{dx:0.15,dy:0.48,r:0.08}];
-  for (const s of spots) {
-    ctx.beginPath();
-    ctx.arc(x + w*s.dx, y + h*s.dy, w*s.r, 0, Math.PI*2);
-    ctx.fill();
-  }
-  // Rosto branco
-  ctx.fillStyle = '#FFE8C8';
-  ctx.beginPath();
-  ctx.ellipse(x + w/2, y + h*0.72, w*0.38, h*0.28, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Olhos
-  ctx.fillStyle = '#181818';
-  ctx.beginPath();
-  ctx.arc(x + w*0.38, y + h*0.68, w*0.055, 0, Math.PI*2);
-  ctx.arc(x + w*0.62, y + h*0.68, w*0.055, 0, Math.PI*2);
-  ctx.fill();
-  // Sorriso
-  ctx.strokeStyle = '#181818';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(x + w/2, y + h*0.7, w*0.14, 0.2, Math.PI - 0.2);
-  ctx.stroke();
+function drawFlag(x,y){
+  ctx.fillStyle='#888'; ctx.fillRect(x+6,y,6,160);
+  ctx.fillStyle='#E81818';
+  ctx.beginPath(); ctx.moveTo(x+12,y); ctx.lineTo(x+58,y+20); ctx.lineTo(x+12,y+40); ctx.closePath(); ctx.fill();
+  ctx.font='bold 20px sans-serif'; ctx.fillText('⭐',x+14,y+28);
+  ctx.fillStyle='#00A800'; ctx.fillRect(x-8,y+160,36,18);
 }
 
-function drawMario(x, y, w, h, frame, onGround) {
-  // Baseado nas cores clássicas do Super Mario
-  const pxW = w / 12;
-  const pxH = h / 16;
+function drawMushroom(x,y,w,h){
+  ctx.fillStyle='#E81818';
+  ctx.beginPath(); ctx.ellipse(x+w/2,y+h*.45,w/2,h*.48,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='white';
+  [{dx:.2,dy:.2,r:.1},{dx:.65,dy:.15,r:.08},{dx:.75,dy:.45,r:.09},{dx:.15,dy:.48,r:.08}]
+  .forEach(s=>{ctx.beginPath();ctx.arc(x+w*s.dx,y+h*s.dy,w*s.r,0,Math.PI*2);ctx.fill();});
+  ctx.fillStyle='#FFE8C8';
+  ctx.beginPath(); ctx.ellipse(x+w/2,y+h*.72,w*.38,h*.28,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#181818';
+  ctx.beginPath(); ctx.arc(x+w*.38,y+h*.68,w*.055,0,Math.PI*2); ctx.arc(x+w*.62,y+h*.68,w*.055,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#181818'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(x+w/2,y+h*.72,w*.13,.2,Math.PI-.2); ctx.stroke();
+}
 
-  function px(col, row, color) {
-    ctx.fillStyle = color;
-    ctx.fillRect(x + col * pxW, y + row * pxH, pxW + 0.5, pxH + 0.5);
-  }
-
-  // Chapéu (vermelho)
-  const R = '#E81818', S = '#8B1818', W2 = '#FFDAB0', BR = '#6B3808', B = '#181818', BL = '#3050E0', YL = '#F8D030';
-
+function drawMario(x,y,w,h,frame,onGround){
+  const pw=w/12, ph=h/16;
+  function px(c,r,col){ ctx.fillStyle=col; ctx.fillRect(x+c*pw, y+r*ph, pw+.5, ph+.5); }
+  const R='#E81818',BR='#6B3808',W='#FFDAB0',BL='#3050E0',YL='#F8D030',BK='#181818';
   // Chapéu
-  for (let c = 3; c <= 8; c++) px(c, 0, R);
-  for (let c = 2; c <= 9; c++) px(c, 1, R);
-
-  // Cabelo + rosto
-  [3,4,5,6,7].forEach(c => px(c, 2, BR));
-  [2,3,4,5,6,7,8,9].forEach(c => px(c, 3, W2));
+  [3,4,5,6,7,8].forEach(c=>px(c,0,R));
+  [2,3,4,5,6,7,8,9].forEach(c=>px(c,1,R));
+  // Cabelo/rosto
+  [3,4,5,6,7].forEach(c=>px(c,2,BR));
+  [2,3,4,5,6,7,8,9].forEach(c=>px(c,3,W));
   px(2,3,BR); px(9,3,BR);
-  // Olhos / nariz
-  px(4,4,B); px(6,4,B);
-  px(5,4,BR); px(7,3,BR);
-  // Bigode
-  [3,4,5,6,7,8].forEach(c => px(c, 5, BR));
-
-  // Corpo (azul macacão)
-  const bodyRow = onGround ? [6,7,8,9] : [6,7,8];
-  [5,6,7,8,9].forEach(c => bodyRow.forEach(r => px(c, r, BL)));
-  // Camisa vermelho
-  [3,4,5,6,7,8,9,10].forEach(c => px(c, 6, R));
-
+  px(4,4,BK); px(6,4,BK); px(5,4,BR); px(7,3,BR);
+  [3,4,5,6,7,8].forEach(c=>px(c,5,BR));
+  // Corpo
+  [3,4,5,6,7,8,9,10].forEach(c=>px(c,6,R));
+  [4,5,6,7,8,9].forEach(c=>[7,8,9].forEach(r=>px(c,r,BL)));
   // Braços
-  if (onGround && (frame===1||frame===3)) {
-    px(2,7,W2); px(2,8,W2);
-    px(10,7,W2); px(10,8,W2);
-  } else {
-    px(2,6,W2); px(2,7,W2);
-    px(10,6,W2); px(10,7,W2);
-  }
-
-  // Sapatos marrons
-  const legFrame = frame % 2;
-  if (onGround) {
-    if (legFrame===0) {
-      [4,5].forEach(c => px(c, 14, BR)); [4,5].forEach(c => px(c, 15, B));
-      [7,8].forEach(c => px(c, 14, BR)); [7,8].forEach(c => px(c, 15, B));
+  const aOff=onGround&&(frame===1||frame===3)?1:0;
+  px(2,6+aOff,W); px(2,7+aOff,W); px(10,6+aOff,W); px(10,7+aOff,W);
+  // Pernas/sapatos
+  const lf=frame%2;
+  if(onGround){
+    if(lf===0){
+      [4,5].forEach(c=>{px(c,14,BR);px(c,15,BK);}); [7,8].forEach(c=>{px(c,14,BR);px(c,15,BK);});
     } else {
-      [3,4,5].forEach(c => px(c, 14, BR)); [3,4,5].forEach(c => px(c, 15, B));
-      [7,8].forEach(c => px(c, 13, BR));
+      [3,4,5].forEach(c=>{px(c,14,BR);px(c,15,BK);}); [7,8].forEach(c=>px(c,13,BR));
     }
   } else {
-    // Pulo
-    [3,4,5].forEach(c => { px(c, 13, BR); px(c, 14, B); });
-    [8,9].forEach(c => { px(c, 12, BR); px(c, 13, B); });
+    [3,4,5].forEach(c=>{px(c,13,BR);px(c,14,BK);}); [8,9].forEach(c=>{px(c,12,BR);px(c,13,BK);});
   }
-
-  // Botões dourados
-  px(6, 9, YL); px(7, 9, YL);
+  // Botões
+  px(6,9,YL); px(7,9,YL);
 }
 
-function drawGoalFlag(x, y) {
-  // Mastro
-  ctx.fillStyle = '#888';
-  ctx.fillRect(x + 6, y, 6, 160);
-  // Bandeira
-  ctx.fillStyle = '#E81818';
-  ctx.beginPath();
-  ctx.moveTo(x + 12, y);
-  ctx.lineTo(x + 60, y + 20);
-  ctx.lineTo(x + 12, y + 40);
-  ctx.closePath();
-  ctx.fill();
-  // Estrela
-  ctx.fillStyle = '#F8D030';
-  ctx.font = 'bold 22px sans-serif';
-  ctx.fillText('⭐', x + 14, y + 28);
-  // Base
-  ctx.fillStyle = '#00A800';
-  ctx.fillRect(x - 10, y + 160, 40, 20);
+function drawProgress(W){
+  const pct=state.score/TOTAL_MUSHROOMS;
+  const bW=Math.min(280,W*.45), bX=(W-bW)/2, bY=8, bH=11;
+  ctx.fillStyle='rgba(0,0,0,.5)'; ctx.fillRect(bX-2,bY-2,bW+4,bH+4);
+  ctx.fillStyle='#444'; ctx.fillRect(bX,bY,bW,bH);
+  ctx.fillStyle='#F8D030'; ctx.fillRect(bX,bY,bW*pct,bH);
+  ctx.fillStyle='white'; ctx.font='bold 8px "Press Start 2P",monospace';
+  ctx.textAlign='center'; ctx.fillText(`${state.score}/${TOTAL_MUSHROOMS} 🍄`,W/2,bY+bH+15); ctx.textAlign='left';
 }
 
-function drawProgressBar(W, H) {
-  const pct = state.score / TOTAL_MUSHROOMS;
-  const bW = Math.min(300, W * 0.5);
-  const bX = (W - bW) / 2;
-  const bY = 10;
-  const bH = 12;
-
-  ctx.fillStyle = 'rgba(0,0,0,0.5)';
-  ctx.fillRect(bX - 2, bY - 2, bW + 4, bH + 4);
-  ctx.fillStyle = '#444';
-  ctx.fillRect(bX, bY, bW, bH);
-  ctx.fillStyle = '#F8D030';
-  ctx.fillRect(bX, bY, bW * pct, bH);
-  ctx.fillStyle = 'white';
-  ctx.font = 'bold 8px "Press Start 2P", monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText(`${state.score}/${TOTAL_MUSHROOMS} 🍄`, W/2, bY + bH + 16);
-  ctx.textAlign = 'left';
-}
-
-function spawnParticles(x, y, color) {
-  for (let i = 0; i < 8; i++) {
-    const angle = (i / 8) * Math.PI * 2;
-    const speed = 3 + Math.random() * 4;
-    state.particles.push({
-      x, y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - 3,
-      color,
-      size: 3 + Math.random() * 4,
-      life: 25 + Math.floor(Math.random() * 10)
-    });
+function spawnParticles(x,y){
+  const colors=['#E53030','#F8D030','#FFFFFF'];
+  for(let i=0;i<10;i++){
+    const a=(i/10)*Math.PI*2, s=3+Math.random()*4;
+    state.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-3,color:colors[i%3],size:3+Math.random()*4,life:28+Math.floor(Math.random()*8)});
   }
 }
 
-function updateHud() {
-  document.getElementById('hudScore').textContent = `🍄 ${state.score}/${TOTAL_MUSHROOMS}`;
+function updateHud(){
+  document.getElementById('hudScore').textContent=`🍄 ${state.score}/4`;
 }
 
 // ==========================================
 // VITÓRIA
 // ==========================================
-function showWin() {
+function showWin(){
   document.getElementById('winModal').classList.add('show');
 }
 
-function openMap() {
-  const addr = 'Av.+Santo+Afonso,+90+Campos+Elíseos+Varginha+MG';
+function openMap(){
   window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Av. Santo Afonso, 90, Campos Elíseos, Varginha, MG')}`, '_blank');
 }
 
-function openWhatsApp() {
-  const msg = encodeURIComponent(
-    'Confirmo a presença no aniversário do Emanuel na data e hora mencionados, e tenho ciência que irei deixar meu filho neste incrível universo de diversão e alegria! 🍄🎂\n\nNome da criança: '
-  );
-  // Substitua pelo número real (somente dígitos, com DDI 55)
+function openWhatsApp(){
+  const msg=encodeURIComponent('Confirmo a presença no aniversário do Emanuel na data e hora mencionados, e tenho ciência que irei deixar meu filho neste incrível universo de diversão e alegria! 🍄🎂\n\nNome da criança: ');
   window.open(`https://wa.me/5535988916747?text=${msg}`, '_blank');
 }
 </script>
-
-<!-- ===== RODAPÉ (visível após scroll ou no final) ===== -->
-<!-- Rodapé embutido no modal de vitória, mas também colocamos no DOM para acessibilidade -->
-<footer id="pageFooter" style="display:none;background:#000;color:#FFE066;font-family:'Press Start 2P',monospace;padding:32px 20px;text-align:center;font-size:clamp(0.45rem,1.8vw,0.75rem);line-height:2.4;border-top:4px solid #E81818;">
-  <p style="font-size:1.5em;margin-bottom:12px;">👑🍄 CONVITE OFICIAL DO REINO DOS COGUMELOS 🍄👑</p>
-  <p style="color:white;">Atenção, convidados especiais!<br>Você foi chamado para uma missão muito importante no Reino dos Cogumelos!</p>
-  <br>
-  <p style="color:#7AFF7A;">🎂 MISSÃO: ANIVERSÁRIO DO EMANUEL</p>
-  <p style="color:white;">📅 Data: <span style="color:#FFE066;">18 de julho</span> &nbsp;🕔 Horário: <span style="color:#FFE066;">17h às 21h</span></p>
-  <p style="color:white;">📍 Av. Santo Afonso, 90 – Bairro Campos Elíseos &nbsp; 📌 Varginha – MG</p>
-  <br>
-  <p style="color:#FFB347;">⚠️ IMPORTANTE</p>
-  <p style="color:white;">As crianças devem ser deixadas no local pelos responsáveis.<br>A retirada deverá ser feita ao final do evento.</p>
-  <br>
-  <p style="color:#5CF8C8;">🎮 Siga o caminho da aventura até o final da fase para descobrir o local no mapa!</p>
-  <p style="color:#FFE066;font-size:1.1em;margin-top:16px;">📱 Confirme sua presença pelo WhatsApp!</p>
-</footer>
-
 </body>
 </html>
