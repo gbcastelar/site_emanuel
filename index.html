@@ -11,43 +11,25 @@
 body{
     margin:0;
     font-family:'Press Start 2P', cursive;
-    background:#000;
+    background:linear-gradient(#4fc3f7,#b3e5fc);
     overflow:hidden;
-    color:white;
 }
 
-/* ================= INTRO ================= */
+/* INTRO */
 #intro{
     position:fixed;
     width:100%;
     height:100%;
-    background:black;
+    background:#000;
+    color:#ffd700;
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
     z-index:9999;
 }
 
-#logo{
-    font-size:22px;
-    color:#ffd700;
-    opacity:0;
-    animation:fadeIn 2s forwards;
-}
-
-#loading{
-    margin-top:20px;
-    font-size:10px;
-    opacity:0;
-    animation:fadeIn 3s forwards;
-}
-
-@keyframes fadeIn{
-    to{opacity:1;}
-}
-
-/* ================= HUD ================= */
+/* HUD */
 #hud{
     position:fixed;
     top:10px;
@@ -56,18 +38,17 @@ body{
     z-index:10;
 }
 
-/* ================= GAME AREA ================= */
+/* GAME */
 #game{
     width:100vw;
     height:100vh;
     position:relative;
-    background:linear-gradient(#4fc3f7,#b3e5fc);
 }
 
 /* PLAYER */
 #player{
     position:absolute;
-    bottom:60px;
+    bottom:70px;
     left:50%;
     font-size:30px;
 }
@@ -81,28 +62,31 @@ body{
 /* ENEMY */
 .enemy{
     position:absolute;
-    font-size:25px;
+    font-size:22px;
 }
 
-/* ================= CONVITE ================= */
+/* PANEL */
 #panel{
     position:absolute;
     bottom:0;
     width:100%;
     background:#111;
-    padding:10px;
+    color:#fff;
     font-size:10px;
+    padding:10px;
     border-top:3px solid #ffd700;
+    overflow:auto;
+    max-height:45%;
 }
 
-/* BUTTON */
 .btn{
     display:inline-block;
     margin-top:10px;
     padding:10px;
     background:#25d366;
-    color:white;
+    color:#fff;
     text-decoration:none;
+    font-size:10px;
 }
 </style>
 </head>
@@ -111,8 +95,8 @@ body{
 
 <!-- INTRO -->
 <div id="intro">
-    <div id="logo">🎮 EMANUEL GAME PARTY 🎮</div>
-    <div id="loading">LOADING WORLD...</div>
+    <h1>🎮 EMANUEL GAME PARTY 🎮</h1>
+    <button onclick="startGame()">START</button>
 </div>
 
 <!-- HUD -->
@@ -127,66 +111,92 @@ PONTOS: <span id="score">0</span>
 <div id="player">🏃‍♂️</div>
 
 <div id="panel">
-🎮 Missão: Festa do Emanuel<br>
-📅 18/07 - 17h às 21h<br>
-📍 Varginha/MG<br><br>
 
-👨‍👩‍👧 Crianças devem ser deixadas e retiradas pelos responsáveis.<br>
+👑🍄 CONVITE OFICIAL DO REINO DOS COGUMELOS 🍄👑<br><br>
+
+Atenção, aventureiros!<br><br>
+
+A Princesa Peach tem uma missão muito especial para vocês!<br><br>
+
+O herói Emanuel está comemorando mais uma fase concluída e precisa da ajuda de seus amigos para uma grande festa no Reino dos Cogumelos.<br><br>
+
+Será uma aventura cheia de brincadeiras, desafios, lanches deliciosos e muitas surpresas!<br><br>
+
+⭐ MISSÃO: FESTA DE ANIVERSÁRIO DO EMANUEL ⭐<br><br>
+
+📅 Data: 18 de julho<br>
+🕔 Horário: 17h às 21h<br>
+📍 Av. Santo Afonso, 90 – Bairro Campos Elíseos<br>
+📌 Varginha/MG<br><br>
+
+👨‍👩‍👧 IMPORTANTE:<br>
+As crianças devem ser deixadas no local pelos responsáveis e retiradas ao final do evento.<br><br>
+
+🎮 Aperte START e venha celebrar com o Emanuel! 🎮<br><br>
 
 <a class="btn"
 href="https://wa.me/5535988916747?text=Confirmo%20a%20presença%20da%20criança%20no%20evento%20do%20Emanuel.%20Estou%20ciente%20de%20que%20devo%20deixar%20e%20retirar%20no%20local."
 target="_blank">
 CONFIRMAR PRESENÇA
 </a>
+
 </div>
 
 </div>
 
 <script>
 
-/* ================= INTRO ================= */
-setTimeout(()=>{
+/* ================= SAFE START ================= */
+let started=false;
+function startGame(){
     document.getElementById("intro").style.display="none";
-    startGame();
-},3500);
+    if(started) return;
+    started=true;
+    loop();
+}
 
-/* ================= GAME STATE ================= */
+/* ================= STATE ================= */
 let score=0;
 let lives=3;
 let player=document.getElementById("player");
 let x=window.innerWidth/2;
 
-/* ================= PLAYER MOVE ================= */
+/* ================= MOVE ================= */
 document.addEventListener("keydown",(e)=>{
     if(e.key==="ArrowLeft") x-=20;
     if(e.key==="ArrowRight") x+=20;
-
     player.style.left=x+"px";
 });
+
+/* ================= SAFE UPDATE UI ================= */
+function updateHUD(){
+    document.getElementById("score").innerText=score;
+    document.getElementById("lives").innerText=lives;
+}
+
+/* ================= NO HARD GAME OVER ================= */
+function hit(){
+    lives = Math.max(0, lives-1);
+    updateHUD();
+
+    // NÃO reinicia, NÃO trava
+    if(lives === 0){
+        lives = 3;
+        score = Math.max(0, score-3); // penalidade leve
+        updateHUD();
+    }
+}
 
 /* ================= SCORE ================= */
 function addScore(){
     score++;
-    document.getElementById("score").innerText=score;
-
-    if(score%10===0){
-        changeMusic();
-    }
+    updateHUD();
 }
 
-/* ================= LIVES ================= */
-function hit(){
-    lives--;
-    document.getElementById("lives").innerText=lives;
-
-    if(lives<=0){
-        alert("GAME OVER - REINICIANDO");
-        location.reload();
-    }
-}
-
-/* ================= COINS ================= */
+/* ================= SAFE COIN ================= */
 function spawnCoin(){
+    if(!started) return;
+
     let c=document.createElement("div");
     c.className="coin";
     c.innerHTML="🪙";
@@ -195,20 +205,31 @@ function spawnCoin(){
 
     document.getElementById("game").appendChild(c);
 
-    let fall=setInterval(()=>{
-        let top=parseInt(c.style.top);
-        c.style.top=(top+5)+"px";
+    let y=0;
 
-        if(top>window.innerHeight-120){
-            if(Math.abs(top-x)<50) addScore();
+    let fall=setInterval(()=>{
+        if(!c.parentNode){
+            clearInterval(fall);
+            return;
+        }
+
+        y+=5;
+        c.style.top=y+"px";
+
+        if(y > window.innerHeight-120){
+            if(Math.abs(parseInt(c.style.left)-x)<50){
+                addScore();
+            }
             c.remove();
             clearInterval(fall);
         }
     },30);
 }
 
-/* ================= ENEMY ================= */
+/* ================= SAFE ENEMY ================= */
 function spawnEnemy(){
+    if(!started) return;
+
     let e=document.createElement("div");
     e.className="enemy";
     e.innerHTML="👾";
@@ -217,11 +238,18 @@ function spawnEnemy(){
 
     document.getElementById("game").appendChild(e);
 
-    let fall=setInterval(()=>{
-        let top=parseInt(e.style.top);
-        e.style.top=(top+7)+"px";
+    let y=0;
 
-        if(top>window.innerHeight-120){
+    let fall=setInterval(()=>{
+        if(!e.parentNode){
+            clearInterval(fall);
+            return;
+        }
+
+        y+=6;
+        e.style.top=y+"px";
+
+        if(y > window.innerHeight-120){
             hit();
             e.remove();
             clearInterval(fall);
@@ -230,53 +258,11 @@ function spawnEnemy(){
 }
 
 /* ================= GAME LOOP ================= */
-function startGame(){
+function loop(){
     setInterval(spawnCoin,1200);
     setInterval(spawnEnemy,2000);
-    startMusic();
+    updateHUD();
 }
-
-/* ================= MUSIC ================= */
-let ctx;
-let mode=0;
-
-function startMusic(){
-    if(!ctx) ctx=new AudioContext();
-    playMusic();
-}
-
-function changeMusic(){
-    mode++;
-}
-
-function playMusic(){
-    let notes1=[262,330,392,523];
-    let notes2=[196,220,262,330];
-    let notes3=[523,659,784,1046];
-
-    let notes=mode<2?notes1:mode<4?notes2:notes3;
-
-    let t=ctx.currentTime;
-
-    for(let i=0;i<30;i++){
-        let o=ctx.createOscillator();
-        let g=ctx.createGain();
-
-        o.type="square";
-        o.frequency.value=notes[i%notes.length];
-
-        g.gain.value=0.05;
-
-        o.connect(g);
-        g.connect(ctx.destination);
-
-        o.start(t+i*0.2);
-        o.stop(t+i*0.2+0.1);
-    }
-}
-
-/* loop música dinâmica */
-setInterval(playMusic,4000);
 
 </script>
 
