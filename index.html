@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emanuel - Reino dos Cogumelos</title>
+<title>Emanuel Game Party</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
@@ -11,262 +11,254 @@
 body{
     margin:0;
     font-family:'Press Start 2P', cursive;
-    background: linear-gradient(#4fc3f7,#b3e5fc);
+    background:#000;
     overflow:hidden;
     color:white;
 }
 
-/* START SCREEN */
-#startScreen{
+/* ================= INTRO ================= */
+#intro{
     position:fixed;
     width:100%;
     height:100%;
     background:black;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
+    flex-direction:column;
     z-index:9999;
-    color:#ffd700;
 }
 
-#startScreen h1{
-    font-size:18px;
-    animation:blink 1s infinite;
-}
-
-@keyframes blink{
-    50%{opacity:0.4;}
-}
-
-/* HUD */
-.hud{
-    text-align:center;
-    padding:10px;
-}
-
-.title{
-    font-size:14px;
-    color:#ffd700;
-    text-shadow:3px 3px #000;
-}
-
-/* CARD */
-.card{
-    width:90%;
-    margin:auto;
-    background:#111;
-    border:6px solid #ffd700;
-    padding:12px;
-    border-radius:15px;
-    text-align:center;
-    max-height:70vh;
-    overflow:auto;
-}
-
-/* BUTTON */
-.btn{
-    display:inline-block;
-    margin-top:15px;
-    padding:12px;
-    background:#25d366;
-    color:#fff;
-    border-radius:10px;
-    text-decoration:none;
-    font-size:10px;
-}
-
-/* MAP */
-.map{
-    width:100%;
-    height:160px;
-    margin-top:10px;
-    border:3px solid #000;
-}
-
-/* COIN */
-.coin{
-    position:absolute;
+#logo{
     font-size:22px;
-    animation:fall 1s linear forwards;
+    color:#ffd700;
+    opacity:0;
+    animation:fadeIn 2s forwards;
 }
 
-@keyframes fall{
-    from{transform:translateY(0);}
-    to{transform:translateY(300px);opacity:0;}
+#loading{
+    margin-top:20px;
+    font-size:10px;
+    opacity:0;
+    animation:fadeIn 3s forwards;
+}
+
+@keyframes fadeIn{
+    to{opacity:1;}
+}
+
+/* ================= HUD ================= */
+#hud{
+    position:fixed;
+    top:10px;
+    left:10px;
+    font-size:10px;
+    z-index:10;
+}
+
+/* ================= GAME AREA ================= */
+#game{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    background:linear-gradient(#4fc3f7,#b3e5fc);
 }
 
 /* PLAYER */
 #player{
     position:absolute;
-    bottom:80px;
+    bottom:60px;
     left:50%;
     font-size:30px;
 }
 
-/* FIREWORK */
-.firework{
+/* COIN */
+.coin{
     position:absolute;
-    font-size:30px;
-    animation:boom 1s ease-out forwards;
+    font-size:20px;
 }
 
-@keyframes boom{
-    0%{transform:scale(0);}
-    100%{transform:scale(2);opacity:0;}
+/* ENEMY */
+.enemy{
+    position:absolute;
+    font-size:25px;
 }
 
-/* POWER UP */
-.power{
-    position:fixed;
-    top:20%;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:40px;
-    opacity:0;
-    animation:pop 1s ease-out;
+/* ================= CONVITE ================= */
+#panel{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background:#111;
+    padding:10px;
+    font-size:10px;
+    border-top:3px solid #ffd700;
 }
 
-@keyframes pop{
-    0%{transform:scale(0);}
-    50%{opacity:1;}
-    100%{transform:scale(2);opacity:0;}
+/* BUTTON */
+.btn{
+    display:inline-block;
+    margin-top:10px;
+    padding:10px;
+    background:#25d366;
+    color:white;
+    text-decoration:none;
 }
 </style>
 </head>
 
-<body onclick="dropCoins(event)">
+<body>
 
-<!-- START SCREEN -->
-<div id="startScreen">
-    <h1>🎮 PRESS START 🎮</h1>
-    <button onclick="startGame()" style="
-        margin-top:20px;
-        padding:10px;
-        font-family:monospace;
-        background:#000;
-        color:#ffd700;
-        border:2px solid #ffd700;
-    ">START</button>
+<!-- INTRO -->
+<div id="intro">
+    <div id="logo">🎮 EMANUEL GAME PARTY 🎮</div>
+    <div id="loading">LOADING WORLD...</div>
 </div>
 
-<!-- POWER UP -->
-<div id="power" class="power">🍄 POWER UP!</div>
-
-<div class="hud">
-    <div class="title">🍄 REINO DOS COGUMELOS - EMANUEL 🍄</div>
+<!-- HUD -->
+<div id="hud">
+VIDAS: <span id="lives">3</span><br>
+PONTOS: <span id="score">0</span>
 </div>
 
-<div class="card">
-
-<p>
-🎮 MISSÃO: ANIVERSÁRIO DO EMANUEL<br><br>
-
-📅 18/07<br>
-🕔 17h - 21h<br>
-📍 Varginha/MG<br><br>
-
-👨‍👩‍👧 Importante: As crianças devem ser deixadas no local pelos responsáveis e retiradas ao final do evento.<br><br>
-
-Prepare-se para a aventura!
-</p>
-
-<div id="map" class="map"></div>
-
-<a class="btn"
-href="https://wa.me/5535988916747?text=Confirmo%20a%20presença%20da%20criança%20no%20aniversário%20do%20Emanuel.%20Estou%20ciente%20de%20que%20devo%20deixar%20e%20retirar%20no%20local."
-target="_blank">
-▶ CONFIRMAR PRESENÇA
-</a>
-
-<button onclick="startMusic()" style="
-margin-top:10px;
-padding:8px;
-background:#000;
-color:#fff;
-border:2px solid #ffd700;
-font-size:10px;
-">
-▶ MÚSICA 8-BIT
-</button>
-
-</div>
+<!-- GAME -->
+<div id="game">
 
 <div id="player">🏃‍♂️</div>
 
+<div id="panel">
+🎮 Missão: Festa do Emanuel<br>
+📅 18/07 - 17h às 21h<br>
+📍 Varginha/MG<br><br>
+
+👨‍👩‍👧 Crianças devem ser deixadas e retiradas pelos responsáveis.<br>
+
+<a class="btn"
+href="https://wa.me/5535988916747?text=Confirmo%20a%20presença%20da%20criança%20no%20evento%20do%20Emanuel.%20Estou%20ciente%20de%20que%20devo%20deixar%20e%20retirar%20no%20local."
+target="_blank">
+CONFIRMAR PRESENÇA
+</a>
+</div>
+
+</div>
+
 <script>
 
-document.getElementById("map").innerHTML =
-`<iframe width="100%" height="160"
-src="https://www.google.com/maps?q=Av.+Santo+Afonso+90+Varginha+MG&output=embed"></iframe>`;
+/* ================= INTRO ================= */
+setTimeout(()=>{
+    document.getElementById("intro").style.display="none";
+    startGame();
+},3500);
 
-/* START GAME */
-function startGame(){
-    document.getElementById("startScreen").style.display="none";
-    powerUp();
-}
-
-/* POWER UP */
-function powerUp(){
-    const p = document.getElementById("power");
-    p.style.animation="pop 1s ease-out";
-}
-
-/* MOEDA */
-let audioCtx;
-function coinSound(){
-    if(!audioCtx){
-        audioCtx = new AudioContext();
-    }
-    let o = audioCtx.createOscillator();
-    let g = audioCtx.createGain();
-
-    o.type="square";
-    o.frequency.value=1200;
-
-    g.gain.value=0.1;
-
-    o.connect(g);
-    g.connect(audioCtx.destination);
-
-    o.start();
-    o.stop(audioCtx.currentTime+0.1);
-}
-
-/* CLICK COINS */
-function dropCoins(e){
-    coinSound();
-
-    for(let i=0;i<5;i++){
-        let c=document.createElement("div");
-        c.className="coin";
-        c.innerHTML="🪙";
-        c.style.left=e.clientX+"px";
-        c.style.top=e.clientY+"px";
-        document.body.appendChild(c);
-        setTimeout(()=>c.remove(),1000);
-    }
-}
-
-/* PLAYER MOVEMENT */
+/* ================= GAME STATE ================= */
+let score=0;
+let lives=3;
 let player=document.getElementById("player");
 let x=window.innerWidth/2;
 
-document.addEventListener("keydown",function(e){
+/* ================= PLAYER MOVE ================= */
+document.addEventListener("keydown",(e)=>{
     if(e.key==="ArrowLeft") x-=20;
     if(e.key==="ArrowRight") x+=20;
+
     player.style.left=x+"px";
 });
 
-/* MUSIC */
+/* ================= SCORE ================= */
+function addScore(){
+    score++;
+    document.getElementById("score").innerText=score;
+
+    if(score%10===0){
+        changeMusic();
+    }
+}
+
+/* ================= LIVES ================= */
+function hit(){
+    lives--;
+    document.getElementById("lives").innerText=lives;
+
+    if(lives<=0){
+        alert("GAME OVER - REINICIANDO");
+        location.reload();
+    }
+}
+
+/* ================= COINS ================= */
+function spawnCoin(){
+    let c=document.createElement("div");
+    c.className="coin";
+    c.innerHTML="🪙";
+    c.style.left=Math.random()*window.innerWidth+"px";
+    c.style.top="0px";
+
+    document.getElementById("game").appendChild(c);
+
+    let fall=setInterval(()=>{
+        let top=parseInt(c.style.top);
+        c.style.top=(top+5)+"px";
+
+        if(top>window.innerHeight-120){
+            if(Math.abs(top-x)<50) addScore();
+            c.remove();
+            clearInterval(fall);
+        }
+    },30);
+}
+
+/* ================= ENEMY ================= */
+function spawnEnemy(){
+    let e=document.createElement("div");
+    e.className="enemy";
+    e.innerHTML="👾";
+    e.style.left=Math.random()*window.innerWidth+"px";
+    e.style.top="0px";
+
+    document.getElementById("game").appendChild(e);
+
+    let fall=setInterval(()=>{
+        let top=parseInt(e.style.top);
+        e.style.top=(top+7)+"px";
+
+        if(top>window.innerHeight-120){
+            hit();
+            e.remove();
+            clearInterval(fall);
+        }
+    },30);
+}
+
+/* ================= GAME LOOP ================= */
+function startGame(){
+    setInterval(spawnCoin,1200);
+    setInterval(spawnEnemy,2000);
+    startMusic();
+}
+
+/* ================= MUSIC ================= */
 let ctx;
+let mode=0;
+
 function startMusic(){
     if(!ctx) ctx=new AudioContext();
+    playMusic();
+}
 
-    let notes=[262,330,392,523,392,330];
+function changeMusic(){
+    mode++;
+}
+
+function playMusic(){
+    let notes1=[262,330,392,523];
+    let notes2=[196,220,262,330];
+    let notes3=[523,659,784,1046];
+
+    let notes=mode<2?notes1:mode<4?notes2:notes3;
+
     let t=ctx.currentTime;
 
-    for(let i=0;i<60;i++){
+    for(let i=0;i<30;i++){
         let o=ctx.createOscillator();
         let g=ctx.createGain();
 
@@ -283,28 +275,8 @@ function startMusic(){
     }
 }
 
-/* FIREWORK TIMER */
-setInterval(()=>{
-    let now=new Date();
-    let event=new Date("2026-07-18T17:00:00");
-    let diff=event-now;
-
-    if(diff<3600000 && diff>0){
-        firework();
-    }
-},10000);
-
-function firework(){
-    for(let i=0;i<10;i++){
-        let f=document.createElement("div");
-        f.className="firework";
-        f.innerHTML="🎆";
-        f.style.left=Math.random()*window.innerWidth+"px";
-        f.style.top=Math.random()*window.innerHeight+"px";
-        document.body.appendChild(f);
-        setTimeout(()=>f.remove(),1000);
-    }
-}
+/* loop música dinâmica */
+setInterval(playMusic,4000);
 
 </script>
 
