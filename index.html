@@ -3,44 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emanuel Dino Game</title>
+<title>Reino dos Cogumelos - Emanuel</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
 body{
     margin:0;
-    font-family:'Press Start 2P', cursive;
-    background:#8fd3ff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    background:#9fd9ff;
+    font-family:Arial, sans-serif; /* texto mais legível */
+    overflow:hidden;
+}
+
+/* GAME AREA */
+#game{
+    width:100vw;
     height:100vh;
-    overflow:hidden;
-}
-
-/* CONTAINER CENTRAL */
-#gameContainer{
-    width:900px;
-    height:600px;
     position:relative;
-    background:#a6ddff;
-    border:4px solid #000;
-    overflow:hidden;
-}
-
-/* INTRO */
-#intro{
-    position:absolute;
-    width:100%;
-    height:100%;
-    background:#111;
-    color:#ffd700;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
+    background:linear-gradient(#bfe8ff,#eaf7ff);
 }
 
 /* HUD */
@@ -48,17 +28,16 @@ body{
     position:absolute;
     top:10px;
     left:10px;
-    font-size:12px;
-    color:#000;
-    z-index:5;
+    font-family:'Press Start 2P', cursive;
+    font-size:10px;
 }
 
 /* PLAYER */
 #player{
     position:absolute;
     bottom:120px;
-    left:60px;
-    font-size:30px;
+    left:80px;
+    font-size:28px;
 }
 
 /* CHÃO */
@@ -70,227 +49,192 @@ body{
     background:#000;
 }
 
-/* OBSTÁCULO */
-.obstacle{
+/* OBSTÁCULOS */
+.enemy{
     position:absolute;
     bottom:120px;
     font-size:22px;
 }
 
-/* MOEDA */
-.coin{
+/* CAMINHO VISUAL */
+#path{
     position:absolute;
-    font-size:18px;
+    bottom:100px;
+    width:100%;
+    height:40px;
+    background:repeating-linear-gradient(
+        90deg,
+        #ccc,
+        #ccc 20px,
+        #bbb 20px,
+        #bbb 40px
+    );
+    opacity:0.4;
 }
 
-/* CONVITE */
+/* CONVITE (texto mais sério) */
 #panel{
     position:absolute;
-    bottom:0;
-    width:100%;
-    height:120px;
-    background:#222;
-    color:#fff;
-    font-size:11px;
-    padding:10px;
-    line-height:1.4;
+    top:0;
+    right:0;
+    width:320px;
+    height:100%;
+    background:#ffffff;
+    color:#222;
+    padding:15px;
     overflow:auto;
+    font-size:14px;
+    line-height:1.5;
+    box-shadow:-5px 0 10px rgba(0,0,0,0.2);
 }
 
-.btn{
-    display:inline-block;
-    margin-top:8px;
-    padding:8px;
-    background:#25d366;
-    color:#fff;
-    text-decoration:none;
-    font-size:10px;
+.title{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.highlight{
+    font-weight:bold;
+    color:#0b6bff;
+}
+
+/* MAPA FINAL */
+#mapScreen{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#fff;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+#map{
+    width:80%;
+    height:60%;
+    border:3px solid #000;
+}
+
+/* START */
+#intro{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#111;
+    color:#ffd700;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
 }
 </style>
 </head>
 
 <body>
 
-<div id="gameContainer">
+<div id="game">
 
 <!-- INTRO -->
 <div id="intro">
-    <h1>🎮 EMANUEL DINO GAME 🎮</h1>
+    <h1>🍄 REINO DOS COGUMELOS 🍄</h1>
     <button onclick="startGame()">START</button>
 </div>
 
 <!-- HUD -->
 <div id="hud">
-PONTOS: <span id="score">0</span><br>
-VIDAS: <span id="lives">3</span>
+PROGRESSO: <span id="progress">0</span>%
 </div>
 
-<!-- GAME AREA -->
-<div id="player">🦖</div>
+<div id="player">🧑‍🔧</div>
 <div id="ground"></div>
+<div id="path"></div>
 
-<!-- CONVITE -->
+<!-- TEXTO MAIS LEGÍVEL -->
 <div id="panel">
 
-👑🍄 CONVITE OFICIAL DO REINO DOS COGUMELOS 🍄👑<br>
-📅 18/07 | 🕔 17h às 21h | 📍 Varginha/MG<br><br>
+<div class="title">🎉 Aniversário do Emanuel</div>
 
-👨‍👩‍👧 Crianças devem ser deixadas e retiradas pelos responsáveis.<br><br>
+<p>
+Você foi convidado para uma missão especial no Reino dos Cogumelos!
+</p>
 
-🎮 Pressione ESPAÇO, ENTER ou toque na tela para pular!
+<p class="highlight">
+📅 18 de julho<br>
+🕔 17h às 21h<br>
+📍 Varginha / MG
+</p>
 
-<br>
+<p>
+Este evento foi preparado com muito carinho para celebrar mais uma fase concluída do Emanuel.
+</p>
 
-<a class="btn"
-href="https://wa.me/5535988916747?text=Confirmo%20a%20presença%20da%20criança%20no%20evento%20do%20Emanuel.%20Estou%20ciente%20de%20que%20devo%20deixar%20e%20retirar%20no%20local."
-target="_blank">
-CONFIRMAR PRESENÇA
-</a>
+<p class="highlight">
+⚠ IMPORTANTE:<br>
+As crianças devem ser deixadas no local pelos responsáveis e retiradas ao final do evento.
+</p>
 
+<p>
+👉 Acompanhe o caminho até o final da fase para ver o local do evento.
+</p>
+
+</div>
+
+<!-- MAPA FINAL -->
+<div id="mapScreen">
+    <h2>📍 LOCAL DO EVENTO</h2>
+    <div id="map"></div>
 </div>
 
 </div>
 
 <script>
 
-/* ================= STATE ================= */
+/* STATE */
 let started=false;
-let score=0;
-let lives=3;
-let jumping=false;
+let progress=0;
+let player=document.getElementById("player");
 
-const player=document.getElementById("player");
-
-/* ================= START ================= */
+/* START */
 function startGame(){
     document.getElementById("intro").style.display="none";
     started=true;
     loop();
 }
 
-/* ================= JUMP ================= */
-function jump(){
-    if(jumping) return;
-    jumping=true;
+/* MOVIMENTO AUTOMÁTICO (caminho) */
+function advance(){
+    progress++;
 
-    let up=0;
+    document.getElementById("progress").innerText=progress;
 
-    let t=setInterval(()=>{
-        up+=6;
-        player.style.bottom=(120+up)+"px";
+    player.style.left=(80 + progress*5)+"px";
 
-        if(up>=120){
-            clearInterval(t);
-
-            let down=setInterval(()=>{
-                up-=6;
-                player.style.bottom=(120+up)+"px";
-
-                if(up<=0){
-                    clearInterval(down);
-                    jumping=false;
-                    player.style.bottom="120px";
-                }
-            },20);
-        }
-    },20);
-}
-
-/* ================= CONTROLS FIXED ================= */
-document.addEventListener("keydown",(e)=>{
-    if(e.code==="Space" || e.code==="Enter"){
-        e.preventDefault();
-        jump();
+    if(progress >= 100){
+        finishGame();
     }
-});
-
-/* TOQUE NA TELA */
-document.addEventListener("touchstart",()=>{
-    jump();
-});
-
-/* CLIQUE NA TELA */
-document.addEventListener("click",()=>{
-    jump();
-});
-
-/* ================= SCORE ================= */
-function update(){
-    document.getElementById("score").innerText=score;
-    document.getElementById("lives").innerText=lives;
 }
 
-/* ================= OBSTÁCULO ================= */
-function spawnObstacle(){
-    if(!started) return;
+/* FINAL */
+function finishGame(){
+    started=false;
 
-    let o=document.createElement("div");
-    o.className="obstacle";
-    o.innerHTML="👾";
-    o.style.left="900px";
-    document.getElementById("gameContainer").appendChild(o);
+    document.getElementById("game").style.display="none";
+    document.getElementById("mapScreen").style.display="flex";
 
-    let x=900;
-
-    let move=setInterval(()=>{
-        x-=6;
-        o.style.left=x+"px";
-
-        if(x<120 && x>60){
-            if(!jumping){
-                lives--;
-                update();
-            }
-        }
-
-        if(x<-50){
-            o.remove();
-            clearInterval(move);
-            score++;
-            update();
-        }
-    },20);
+    document.getElementById("map").innerHTML =
+    `<iframe width="100%" height="100%"
+    src="https://www.google.com/maps?q=Av.+Santo+Afonso+90+Varginha+MG&output=embed"></iframe>`;
 }
 
-/* ================= COIN ================= */
-function spawnCoin(){
-    if(!started) return;
-
-    let c=document.createElement("div");
-    c.className="coin";
-    c.innerHTML="🪙";
-    c.style.left="900px";
-    c.style.bottom="160px";
-
-    document.getElementById("gameContainer").appendChild(c);
-
-    let x=900;
-
-    let move=setInterval(()=>{
-        x-=6;
-        c.style.left=x+"px";
-
-        if(x<120 && x>60){
-            score+=2;
-            update();
-            c.remove();
-            clearInterval(move);
-        }
-
-        if(x<-50){
-            c.remove();
-            clearInterval(move);
-        }
-    },20);
-}
-
-/* ================= LOOP ================= */
+/* LOOP */
 function loop(){
-    setInterval(spawnObstacle,1800);
-    setInterval(spawnCoin,2600);
+    setInterval(()=>{
+        if(started) advance();
+    },200);
 }
-
-update();
 
 </script>
 
