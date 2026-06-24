@@ -38,6 +38,7 @@
   #startScreen {
     position: fixed;
     inset: 0;
+    overflow-y: auto;
     background: linear-gradient(180deg, #5C94FC 0%, #3a78e4 60%, #1a5cc8 100%);
     display: flex;
     flex-direction: column;
@@ -136,26 +137,6 @@
   .invite-preview .highlight {
     color: var(--coin);
   }
-
-  #startBtn {
-    font-family: 'Press Start 2P', monospace;
-    font-size: clamp(0.8rem, 3.5vw, 1.3rem);
-    background: var(--mario-red);
-    color: white;
-    border: none;
-    padding: 16px 36px;
-    border-radius: 6px;
-    cursor: pointer;
-    border-bottom: 6px solid #8B0000;
-    text-shadow: 2px 2px 0 #000;
-    box-shadow: 0 8px 0 #8B0000, 0 12px 20px rgba(0,0,0,0.4);
-    animation: btnBounce 1s ease-in-out infinite;
-    transition: transform 0.1s, box-shadow 0.1s;
-    letter-spacing: 2px;
-  }
-
-  @keyframes btnBounce {
-    0%,100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
   }
 
@@ -316,7 +297,7 @@
 <body>
 
 <!-- ===== TELA INICIAL ===== -->
-<div id="startScreen">
+<div id="startScreen" onclick="startGame()" style="cursor:pointer;">
   <div class="clouds-bg" id="cloudsBg"></div>
 
   <div class="title-block">
@@ -325,7 +306,32 @@
     <p class="sub">🎂 MISSÃO: ANIVERSÁRIO</p>
   </div>
 
-  <div class="mario-hero">🍄</div>
+  <div class="mario-hero" style="font-size:unset;animation:none;filter:none;margin:14px 0;">
+    <button id="startBtn" onclick="startGame()" style="
+      font-family:'Press Start 2P',monospace;
+      font-size:clamp(0.85rem,4vw,1.4rem);
+      background:var(--mario-red);
+      color:white;
+      border:none;
+      padding:18px 38px;
+      border-radius:8px;
+      cursor:pointer;
+      border-bottom:7px solid #8B0000;
+      text-shadow:2px 2px 0 #000;
+      box-shadow:0 8px 0 #8B0000, 0 12px 24px rgba(0,0,0,0.45);
+      letter-spacing:2px;
+      animation:btnBounce 1s ease-in-out infinite;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    ">
+      <span style="font-size:clamp(2rem,10vw,3.5rem);line-height:1;">▶️</span>
+      PRESSIONAR START<br>
+      <span style="color:#FFE066;font-size:0.75em;">PARA INICIAR O JOGO</span><br>
+      <span style="color:rgba(255,255,255,0.8);font-size:0.6em;">E CHEGAR AO SEU DESTINO</span>
+    </button>
+  </div>
 
   <div class="invite-preview">
     <p>
@@ -337,14 +343,6 @@
     </p>
   </div>
   <div style="background:#E81818;border:3px solid #FFE066;border-radius:8px;padding:12px 18px;max-width:90vw;text-align:center;margin-bottom:14px;animation:pulse 1.8s ease-in-out infinite;">
-    <p style="font-family:'Press Start 2P',monospace;color:#FFE066;font-size:clamp(0.45rem,2vw,0.72rem);line-height:2.2;text-shadow:1px 1px 0 #000;">
-      ⚠️ ATENÇÃO RESPONSÁVEIS ⚠️<br>
-      <span style="color:white;">A criança deverá ser<br>DEIXADA no local pelo<br>responsável e RESGATADA<br>ao fim da missão!</span><br>
-      🕔 <span style="color:#FFE066;">FIM: 21H</span>
-    </p>
-  </div>
-
-  <button id="startBtn" onclick="startGame()">▶ PRESS START</button>
 </div>
 
 <!-- ===== JOGO ===== -->
