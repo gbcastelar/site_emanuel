@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emanuel Game Party</title>
+<title>Emanuel Dino Game</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
@@ -11,16 +11,30 @@
 body{
     margin:0;
     font-family:'Press Start 2P', cursive;
-    background:linear-gradient(#4fc3f7,#b3e5fc);
+    background:#8fd3ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* CONTAINER CENTRAL */
+#gameContainer{
+    width:900px;
+    height:600px;
+    position:relative;
+    background:#a6ddff;
+    border:4px solid #000;
     overflow:hidden;
 }
 
 /* INTRO */
 #intro{
-    position:fixed;
+    position:absolute;
     width:100%;
     height:100%;
-    background:#000;
+    background:#111;
     color:#ffd700;
     display:flex;
     flex-direction:column;
@@ -31,58 +45,62 @@ body{
 
 /* HUD */
 #hud{
-    position:fixed;
+    position:absolute;
     top:10px;
     left:10px;
-    font-size:10px;
-    z-index:10;
-}
-
-/* GAME */
-#game{
-    width:100vw;
-    height:100vh;
-    position:relative;
+    font-size:12px;
+    color:#000;
+    z-index:5;
 }
 
 /* PLAYER */
 #player{
     position:absolute;
-    bottom:70px;
-    left:50%;
+    bottom:120px;
+    left:60px;
     font-size:30px;
 }
 
-/* COIN */
-.coin{
+/* CHÃO */
+#ground{
     position:absolute;
-    font-size:20px;
+    bottom:100px;
+    width:100%;
+    height:4px;
+    background:#000;
 }
 
-/* ENEMY */
-.enemy{
+/* OBSTÁCULO */
+.obstacle{
     position:absolute;
+    bottom:120px;
     font-size:22px;
 }
 
-/* PANEL */
+/* MOEDA */
+.coin{
+    position:absolute;
+    font-size:18px;
+}
+
+/* CONVITE */
 #panel{
     position:absolute;
     bottom:0;
     width:100%;
-    background:#111;
+    height:120px;
+    background:#222;
     color:#fff;
-    font-size:10px;
+    font-size:11px;
     padding:10px;
-    border-top:3px solid #ffd700;
+    line-height:1.4;
     overflow:auto;
-    max-height:45%;
 }
 
 .btn{
     display:inline-block;
-    margin-top:10px;
-    padding:10px;
+    margin-top:8px;
+    padding:8px;
     background:#25d366;
     color:#fff;
     text-decoration:none;
@@ -93,46 +111,35 @@ body{
 
 <body>
 
+<div id="gameContainer">
+
 <!-- INTRO -->
 <div id="intro">
-    <h1>🎮 EMANUEL GAME PARTY 🎮</h1>
+    <h1>🎮 EMANUEL DINO GAME 🎮</h1>
     <button onclick="startGame()">START</button>
 </div>
 
 <!-- HUD -->
 <div id="hud">
-VIDAS: <span id="lives">3</span><br>
-PONTOS: <span id="score">0</span>
+PONTOS: <span id="score">0</span><br>
+VIDAS: <span id="lives">3</span>
 </div>
 
-<!-- GAME -->
-<div id="game">
+<!-- GAME AREA -->
+<div id="player">🦖</div>
+<div id="ground"></div>
 
-<div id="player">🏃‍♂️</div>
-
+<!-- CONVITE -->
 <div id="panel">
 
-👑🍄 CONVITE OFICIAL DO REINO DOS COGUMELOS 🍄👑<br><br>
+👑🍄 CONVITE OFICIAL DO REINO DOS COGUMELOS 🍄👑<br>
+📅 18/07 | 🕔 17h às 21h | 📍 Varginha/MG<br><br>
 
-Atenção, aventureiros!<br><br>
+👨‍👩‍👧 Crianças devem ser deixadas e retiradas pelos responsáveis.<br><br>
 
-A Princesa Peach tem uma missão muito especial para vocês!<br><br>
+🎮 Pressione ESPAÇO, ENTER ou toque na tela para pular!
 
-O herói Emanuel está comemorando mais uma fase concluída e precisa da ajuda de seus amigos para uma grande festa no Reino dos Cogumelos.<br><br>
-
-Será uma aventura cheia de brincadeiras, desafios, lanches deliciosos e muitas surpresas!<br><br>
-
-⭐ MISSÃO: FESTA DE ANIVERSÁRIO DO EMANUEL ⭐<br><br>
-
-📅 Data: 18 de julho<br>
-🕔 Horário: 17h às 21h<br>
-📍 Av. Santo Afonso, 90 – Bairro Campos Elíseos<br>
-📌 Varginha/MG<br><br>
-
-👨‍👩‍👧 IMPORTANTE:<br>
-As crianças devem ser deixadas no local pelos responsáveis e retiradas ao final do evento.<br><br>
-
-🎮 Aperte START e venha celebrar com o Emanuel! 🎮<br><br>
+<br>
 
 <a class="btn"
 href="https://wa.me/5535988916747?text=Confirmo%20a%20presença%20da%20criança%20no%20evento%20do%20Emanuel.%20Estou%20ciente%20de%20que%20devo%20deixar%20e%20retirar%20no%20local."
@@ -146,124 +153,144 @@ CONFIRMAR PRESENÇA
 
 <script>
 
-/* ================= SAFE START ================= */
+/* ================= STATE ================= */
 let started=false;
+let score=0;
+let lives=3;
+let jumping=false;
+
+const player=document.getElementById("player");
+
+/* ================= START ================= */
 function startGame(){
     document.getElementById("intro").style.display="none";
-    if(started) return;
     started=true;
     loop();
 }
 
-/* ================= STATE ================= */
-let score=0;
-let lives=3;
-let player=document.getElementById("player");
-let x=window.innerWidth/2;
+/* ================= JUMP ================= */
+function jump(){
+    if(jumping) return;
+    jumping=true;
 
-/* ================= MOVE ================= */
+    let up=0;
+
+    let t=setInterval(()=>{
+        up+=6;
+        player.style.bottom=(120+up)+"px";
+
+        if(up>=120){
+            clearInterval(t);
+
+            let down=setInterval(()=>{
+                up-=6;
+                player.style.bottom=(120+up)+"px";
+
+                if(up<=0){
+                    clearInterval(down);
+                    jumping=false;
+                    player.style.bottom="120px";
+                }
+            },20);
+        }
+    },20);
+}
+
+/* ================= CONTROLS FIXED ================= */
 document.addEventListener("keydown",(e)=>{
-    if(e.key==="ArrowLeft") x-=20;
-    if(e.key==="ArrowRight") x+=20;
-    player.style.left=x+"px";
+    if(e.code==="Space" || e.code==="Enter"){
+        e.preventDefault();
+        jump();
+    }
 });
 
-/* ================= SAFE UPDATE UI ================= */
-function updateHUD(){
+/* TOQUE NA TELA */
+document.addEventListener("touchstart",()=>{
+    jump();
+});
+
+/* CLIQUE NA TELA */
+document.addEventListener("click",()=>{
+    jump();
+});
+
+/* ================= SCORE ================= */
+function update(){
     document.getElementById("score").innerText=score;
     document.getElementById("lives").innerText=lives;
 }
 
-/* ================= NO HARD GAME OVER ================= */
-function hit(){
-    lives = Math.max(0, lives-1);
-    updateHUD();
+/* ================= OBSTÁCULO ================= */
+function spawnObstacle(){
+    if(!started) return;
 
-    // NÃO reinicia, NÃO trava
-    if(lives === 0){
-        lives = 3;
-        score = Math.max(0, score-3); // penalidade leve
-        updateHUD();
-    }
+    let o=document.createElement("div");
+    o.className="obstacle";
+    o.innerHTML="👾";
+    o.style.left="900px";
+    document.getElementById("gameContainer").appendChild(o);
+
+    let x=900;
+
+    let move=setInterval(()=>{
+        x-=6;
+        o.style.left=x+"px";
+
+        if(x<120 && x>60){
+            if(!jumping){
+                lives--;
+                update();
+            }
+        }
+
+        if(x<-50){
+            o.remove();
+            clearInterval(move);
+            score++;
+            update();
+        }
+    },20);
 }
 
-/* ================= SCORE ================= */
-function addScore(){
-    score++;
-    updateHUD();
-}
-
-/* ================= SAFE COIN ================= */
+/* ================= COIN ================= */
 function spawnCoin(){
     if(!started) return;
 
     let c=document.createElement("div");
     c.className="coin";
     c.innerHTML="🪙";
-    c.style.left=Math.random()*window.innerWidth+"px";
-    c.style.top="0px";
+    c.style.left="900px";
+    c.style.bottom="160px";
 
-    document.getElementById("game").appendChild(c);
+    document.getElementById("gameContainer").appendChild(c);
 
-    let y=0;
+    let x=900;
 
-    let fall=setInterval(()=>{
-        if(!c.parentNode){
-            clearInterval(fall);
-            return;
-        }
+    let move=setInterval(()=>{
+        x-=6;
+        c.style.left=x+"px";
 
-        y+=5;
-        c.style.top=y+"px";
-
-        if(y > window.innerHeight-120){
-            if(Math.abs(parseInt(c.style.left)-x)<50){
-                addScore();
-            }
+        if(x<120 && x>60){
+            score+=2;
+            update();
             c.remove();
-            clearInterval(fall);
+            clearInterval(move);
         }
-    },30);
+
+        if(x<-50){
+            c.remove();
+            clearInterval(move);
+        }
+    },20);
 }
 
-/* ================= SAFE ENEMY ================= */
-function spawnEnemy(){
-    if(!started) return;
-
-    let e=document.createElement("div");
-    e.className="enemy";
-    e.innerHTML="👾";
-    e.style.left=Math.random()*window.innerWidth+"px";
-    e.style.top="0px";
-
-    document.getElementById("game").appendChild(e);
-
-    let y=0;
-
-    let fall=setInterval(()=>{
-        if(!e.parentNode){
-            clearInterval(fall);
-            return;
-        }
-
-        y+=6;
-        e.style.top=y+"px";
-
-        if(y > window.innerHeight-120){
-            hit();
-            e.remove();
-            clearInterval(fall);
-        }
-    },30);
-}
-
-
-/* ================= GAME LOOP ================= */
+/* ================= LOOP ================= */
 function loop(){
-    setInterval(spawnCoin,1200);
-    setInterval(spawnEnemy,2000);
-    updateHUD();
+    setInterval(spawnObstacle,1800);
+    setInterval(spawnCoin,2600);
 }
+
+update();
 
 </script>
 
