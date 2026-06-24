@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Convite do Emanuel - Game</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    margin:0;
+    font-family:'Press Start 2P', cursive;
+    background: linear-gradient(#4fc3f7,#b3e5fc);
+    overflow:hidden;
+    color:white;
+}
+
+/* HUD */
+.hud{
+    text-align:center;
+    padding:20px;
+}
+
+.title{
+    font-size:20px;
+    color:#ffd700;
+    text-shadow:3px 3px #000;
+}
+
+/* MAPA */
+.map{
+    width:90%;
+    height:200px;
+    margin:20px auto;
+    border:5px solid #000;
+    border-radius:15px;
+}
+
+/* CONTAINER */
+.card{
+    width:90%;
+    margin:auto;
+    background:#111;
+    border:6px solid #ffd700;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+
+/* BOTÕES */
+.btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:15px;
+    background:#25d366;
+    color:#fff;
+    border-radius:10px;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:scale(1.1);
+    filter:brightness(1.2);
+}
+
+/* MOEDAS */
+.coin{
+    position:absolute;
+    font-size:25px;
+    pointer-events:none;
+    animation:fall 1s linear forwards;
+}
+
+@keyframes fall{
+    from{transform:translateY(0);}
+    to{transform:translateY(400px);opacity:0;}
+}
+
+/* PERSONAGEM */
+.runner{
+    position:absolute;
+    bottom:50px;
+    left:-100px;
+    font-size:40px;
+    animation:run 8s linear infinite;
+}
+
+@keyframes run{
+    from{left:-100px;}
+    to{left:110%;}
+}
+
+/* COUNTDOWN */
+#timer{
+    margin:20px;
+    color:#00ff90;
+}
+
+/* FIREWORKS */
+.firework{
+    position:absolute;
+    font-size:40px;
+    animation:boom 1s ease-out forwards;
+}
+
+@keyframes boom{
+    0%{transform:scale(0);}
+    100%{transform:scale(2);opacity:0;}
+}
+
+</style>
+
+</head>
+
+<body onclick="dropCoins(event)">
+
+<div class="hud">
+    <div class="title">🍄 EMANUEL GAME PARTY 🍄</div>
+</div>
+
+<div id="timer"></div>
+
+<div class="card">
+
+```
+🎮 MISSÃO: COMEMORAR O ANIVERSÁRIO DO EMANUEL
+
+<br><br>
+
+📅 18/07 | 🕔 17H - 21H<br>
+📍 Varginha/MG
+
+<br><br>
+
+<div id="map" class="map"></div>
+
+<a class="btn" 
+   onmouseover="playSound()"
+   href="https://wa.me/5535999999999?text=Confirmo presença!"
+   target="_blank">
+   CONFIRMAR PRESENÇA
+</a>
+```
+
+</div>
+
+<div class="runner">🏃‍♂️</div>
+
+<audio id="hoverSound">
+    <source src="hover.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* MAPA */
+function initMap(){
+    const map = document.getElementById("map");
+    map.innerHTML =
+    `<iframe width="100%" height="200"
+    src="https://www.google.com/maps?q=Av.+Santo+Afonso+90+Varginha+MG&output=embed">
+    </iframe>`;
+}
+
+initMap();
+
+/* CHUVA DE MOEDAS */
+function dropCoins(e){
+
+    for(let i=0;i<6;i++){
+
+        let coin = document.createElement("div");
+        coin.className = "coin";
+        coin.innerHTML = "🪙";
+
+        coin.style.left = e.clientX + (Math.random()*100-50) + "px";
+        coin.style.top = e.clientY + "px";
+
+        document.body.appendChild(coin);
+
+        setTimeout(()=>coin.remove(),1000);
+    }
+}
+
+/* SOM BOTÃO */
+function playSound(){
+    document.getElementById("hoverSound").play();
+}
+
+/* CONTADOR */
+const target = new Date("2026-07-18T17:00:00").getTime();
+
+const timer = setInterval(()=>{
+
+    let now = new Date().getTime();
+    let diff = target - now;
+
+    let d = Math.floor(diff/(1000*60*60*24));
+    let h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    let m = Math.floor((diff%(1000*60*60))/(1000*60));
+
+    document.getElementById("timer").innerHTML =
+    `⏳ ${d}d ${h}h ${m}m`;
+
+    if(diff <= 0){
+        clearInterval(timer);
+        document.getElementById("timer").innerHTML = "🎉 START!";
+        firework();
+    }
+
+},1000);
+
+/* FOGOS */
+function firework(){
+
+    for(let i=0;i<20;i++){
+
+        let f = document.createElement("div");
+        f.className="firework";
+        f.innerHTML="🎆";
+
+        f.style.left = Math.random()*window.innerWidth+"px";
+        f.style.top = Math.random()*window.innerHeight+"px";
+
+        document.body.appendChild(f);
+
+        setTimeout(()=>f.remove(),1000);
+    }
+}
+
+</script>
+ 
+</body>
+</html>
